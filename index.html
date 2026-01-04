@@ -5,82 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>noonnoon | 温暖你的每一个正午</title>
     <style>
-        /* 1. 让背景满屏展示 */
         body, html {
             height: 100%;
             margin: 0;
-            overflow: hidden; /* 防止出现滚动条 */
+            overflow: hidden;
+            background-color: #000; /* 背景底色，防止位移露底 */
         }
 
-        .bg-image {
-            /* 引用你上传的图片 */
-            background-image: url('picttest.JPG');
-            
-            /* 核心：让图片铺满且居中 */
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
+        /* 核心：背景容器 */
+        .bg-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110%; /* 关键：比屏幕稍大一点，给位移留出空间 */
+            height: 110%;
+            /* 引用你的插画 */
+            background: url('picttest.JPG') center no-repeat;
             background-size: cover;
-            
-            /* 增加一点模糊感或暗色滤镜，让文字更清晰（可选） */
-            /* filter: brightness(0.9); */
-            
-            /* 开启 Flex 布局让内容居中 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            /* 初始位置稍微偏移回中心 */
+            transform: translate(-5%, -5%);
+            /* 让位移过程丝滑，不生硬 */
+            transition: transform 0.1s ease-out;
+            z-index: 1;
         }
 
-        /* 2. 中间的内容模块 */
+        /* 蒙版：稍微调暗一点，突出中间的卡片 */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.1); 
+            z-index: 2;
+        }
+
+        /* 中间的内容卡片 */
         .content-card {
-            background: rgba(255, 255, 255, 0.85); /* 半透明白色背景 */
-            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
-            padding: 40px 60px;
-            border-radius: 30px;
+            position: relative;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 40px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            max-width: 80%;
-            /* 增加进入时的浮现动画 */
-            animation: fadeIn 1.5s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            max-width: 400px;
+            /* 让卡片始终居中 */
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        h1 { color: #ff8c00; font-size: 3rem; margin: 0 0 10px 0; letter-spacing: 2px; }
-        p { font-size: 1.2rem; color: #444; margin-bottom: 30px; line-height: 1.6; }
+        h1 { color: #ff8c00; font-size: 2.8rem; margin: 0 0 15px 0; letter-spacing: 1px; }
+        p { font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 35px; }
 
         .btn {
             display: inline-block;
-            padding: 15px 45px;
+            padding: 16px 45px;
             background: #ff8c00;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(255,140,0,0.3);
         }
-
-        .btn:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 12px 25px rgba(255,140,0,0.4);
-            background: #ffa500;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .btn:hover { transform: scale(1.05); background: #ffa500; }
     </style>
 </head>
 <body>
 
-    <div class="bg-image">
-        <div class="content-card">
-            <h1>noonnoon</h1>
-            <p>在正午，化解所有沟通的误解。<br>你的 AI 情感陪伴伙伴已就绪。</p>
-            <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
-        </div>
+    <div class="bg-wrapper" id="parallaxBg"></div>
+    <div class="overlay"></div>
+
+    <div class="content-card">
+        <h1>noonnoon</h1>
+        <p>在正午，化解所有沟通的误解。<br>你的 AI 情感陪伴伙伴已就绪。</p>
+        <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
     </div>
+
+    <script>
+        // 核心 JavaScript：监听鼠标移动
+        const bg = document.getElementById('parallaxBg');
+        
+        document.addEventListener('mousemove', (e) => {
+            // 获取鼠标相对于屏幕中心的位置
+            const x = (window.innerWidth / 2 - e.pageX) / 30; // 30 是感应强度，数字越大动得越小
+            const y = (window.innerHeight / 2 - e.pageY) / 30;
+            
+            // 将位置应用到背景图的位移上
+            bg.style.transform = `translate(calc(-5% + ${x}px), calc(-5% + ${y}px))`;
+        });
+    </script>
 
 </body>
 </html>
