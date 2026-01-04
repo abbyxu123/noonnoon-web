@@ -1,25 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>noonnoon | 温暖你的每一个正午</title>
     <style>
-        body { text-align: center; padding: 5% 5%; font-family: sans-serif; background-color: #fffaf0; color: #333; margin: 0; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .illustration { width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        h1 { color: #ff8c00; font-size: 2.5rem; margin-bottom: 10px; }
-        p { font-size: 1.1rem; color: #666; line-height: 1.8; margin-bottom: 40px; }
-        .btn { display: inline-block; padding: 18px 50px; background: #ff8c00; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,140,0,0.3); }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,140,0,0.4); }
+        /* 1. 让背景满屏展示 */
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* 防止出现滚动条 */
+        }
+
+        .bg-image {
+            /* 引用你上传的图片 */
+            background-image: url('picttest.JPG');
+            
+            /* 核心：让图片铺满且居中 */
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            /* 增加一点模糊感或暗色滤镜，让文字更清晰（可选） */
+            /* filter: brightness(0.9); */
+            
+            /* 开启 Flex 布局让内容居中 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 2. 中间的内容模块 */
+        .content-card {
+            background: rgba(255, 255, 255, 0.85); /* 半透明白色背景 */
+            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+            padding: 40px 60px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 80%;
+            /* 增加进入时的浮现动画 */
+            animation: fadeIn 1.5s ease;
+        }
+
+        h1 { color: #ff8c00; font-size: 3rem; margin: 0 0 10px 0; letter-spacing: 2px; }
+        p { font-size: 1.2rem; color: #444; margin-bottom: 30px; line-height: 1.6; }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 45px;
+            background: #ff8c00;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255,140,0,0.3);
+        }
+
+        .btn:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 25px rgba(255,140,0,0.4);
+            background: #ffa500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="picttest.JPG" class="illustration" alt="noonnoon illustration">
-        <h1>noonnoon</h1>
-        <p>在正午，化解所有沟通的误解。<br>你的 AI 情感陪伴伙伴已就绪。</p>
-        <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
+
+    <div class="bg-image">
+        <div class="content-card">
+            <h1>noonnoon</h1>
+            <p>在正午，化解所有沟通的误解。<br>你的 AI 情感陪伴伙伴已就绪。</p>
+            <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
+        </div>
     </div>
+
 </body>
 </html>
