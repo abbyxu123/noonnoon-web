@@ -7,13 +7,15 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --glass-bg: rgba(255, 255, 255, 0.55);
+            --cloud-white: rgba(255, 255, 255, 0.65);
         }
 
         body, html {
             height: 100%; margin: 0; overflow: hidden;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", serif;
+            /* 字体优化：优先使用衬线体增强人文气质 */
+            font-family: "Optima", "Charter", "Georgia", "PingFang SC", serif;
             background-color: #f7f3f0;
+            touch-action: none;
         }
 
         .viewport {
@@ -21,78 +23,82 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* 背景：全机型缩放适配 */
+        /* 动态背景层 */
         .bg-canvas {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
             background: url('picttest.JPG') center no-repeat;
             background-size: cover; z-index: 1;
-            transition: transform 0.3s cubic-bezier(0.1, 0.5, 0.2, 1);
+            will-change: transform;
+            /* 增强跟手感 */
+            transition: transform 0.15s ease-out;
         }
 
-        /* 云朵形状毛玻璃卡片 */
-        .cloud-card {
+        /* 云朵造型容器：增加 ☁️ 标志性的多个半圆弧度 */
+        .cloud-wrapper {
             position: relative; z-index: 10;
-            background: var(--glass-bg);
-            backdrop-filter: blur(18px) saturate(150%);
-            -webkit-backdrop-filter: blur(18px) saturate(150%);
-            padding: 50px 30px;
-            /* 模拟不规则云朵形状 */
-            border-radius: 60% 40% 70% 30% / 40% 50% 60% 70%;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
-            max-width: 320px; width: 80%;
+            max-width: 360px; width: 85%;
+            filter: drop-shadow(0 25px 40px rgba(0,0,0,0.08));
             animation: cloudFloat 6s infinite ease-in-out;
         }
 
+        .cloud-body {
+            background: var(--cloud-white);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            padding: 50px 35px;
+            /* 类似 Emoji ☁️ 的多重弧度圆角 */
+            border-radius: 60% 60% 55% 55% / 70% 70% 45% 45%;
+            position: relative;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* 云朵左右的小圆弧细节 */
+        .cloud-body::before {
+            content: ''; position: absolute; width: 110px; height: 110px;
+            background: inherit; border-radius: 50%; top: -35px; left: 15%; z-index: -1;
+        }
+        .cloud-body::after {
+            content: ''; position: absolute; width: 130px; height: 130px;
+            background: inherit; border-radius: 50%; top: -45px; right: 20%; z-index: -1;
+        }
+
         @keyframes cloudFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.02); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
         h1 {
             color: var(--primary-color);
-            font-size: 2.6rem; margin: 0;
-            font-family: "Optima", "Georgia", serif; /* 使用更有气质的字体 */
-            font-weight: 700; letter-spacing: 2px;
+            font-size: 2.8rem; margin: 0;
+            font-weight: 700; letter-spacing: 3px; /* 增加字间距，显得更高级、轻快 */
         }
 
         p {
-            color: #444; font-size: 0.95rem;
-            line-height: 1.8; margin: 20px 0 35px 0;
-            letter-spacing: 0.5px;
+            color: #555; font-size: 1rem;
+            line-height: 1.8; margin: 18px 0 35px 0;
+            letter-spacing: 0.8px; /* 增加正文字间距，提升易读性 */
         }
 
-        /* 讨巧的异形按钮 */
+        /* 讨巧的异形按钮：非对称圆角 */
         .btn {
             display: inline-block;
-            padding: 14px 40px;
+            padding: 15px 50px;
             background: linear-gradient(135deg, #ff8c00, #ffa502);
             color: white; text-decoration: none;
-            border-radius: 50px 15px 50px 15px; /* 趣味性异形 */
-            font-weight: 600; font-size: 1rem;
+            border-radius: 40px 15px 40px 15px; 
+            font-weight: 600; font-size: 1.05rem;
             transition: all 0.4s ease;
             box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
-            animation: pulse 2.5s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+        .btn:active { transform: scale(0.96); }
 
-        .btn:hover {
-            border-radius: 15px 50px 15px 50px; /* 悬浮时形状反转，非常有趣 */
-            transform: translateY(-3px);
-        }
-
-        /* 手机端适配：针对 Pro Max 等主流屏幕优化 */
+        /* 针对大屏手机 Pro Max 优化 */
         @media screen and (max-width: 768px) {
-            .bg-canvas { width: 180%; left: -40%; }
-            .cloud-card { max-width: 260px; padding: 45px 20px; }
-            h1 { font-size: 2rem; }
-            p { font-size: 0.85rem; padding: 0 10px; }
+            .cloud-wrapper { max-width: 280px; }
+            h1 { font-size: 2.2rem; }
+            p { font-size: 0.88rem; line-height: 1.6; }
         }
     </style>
 </head>
@@ -101,35 +107,42 @@
     <div class="viewport">
         <div class="bg-canvas" id="canvas"></div>
 
-        <div class="cloud-card">
-            <h1>noonnoon</h1>
-            <p>在正午，化解所有沟通的误解。<br>你的情绪伙伴已就绪。</p>
-            <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
+        <div class="cloud-wrapper">
+            <div class="cloud-body">
+                <h1>noonnoon</h1>
+                <p>在正午，化解所有沟通的误解。<br>你的情绪伙伴已就绪。</p>
+                <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
+            </div>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
-        // 陀螺仪与鼠标感应
-        const handleMove = (x, y) => {
-            const moveX = x * 20; 
-            const moveY = y * 20;
-            canvas.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.1)`;
-        };
+        let currentX = 0, currentY = 0;
+        let targetX = 0, targetY = 0;
 
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth) - 0.5;
-            const y = (e.clientY / window.innerHeight) - 0.5;
-            handleMove(x, y);
+        // 触屏滑动：记录手指滑动位置并平滑移动背景
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            // 计算偏移量并乘以灵敏度
+            targetX = (touch.clientX / window.innerWidth - 0.5) * 45;
+            targetY = (touch.clientY / window.innerHeight - 0.5) * 45;
         });
 
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', (e) => {
-                const x = Math.min(Math.max(e.gamma / 45, -1), 1) * 0.5;
-                const y = Math.min(Math.max(e.beta / 45, -1), 1) * 0.5;
-                handleMove(x, y);
-            });
+        // 鼠标感应
+        document.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX / window.innerWidth - 0.5) * 35;
+            targetY = (e.clientY / window.innerHeight - 0.5) * 35;
+        });
+
+        // 平滑动画循环 (Lerp 算法，让滑动不生硬)
+        function animate() {
+            currentX += (targetX - currentX) * 0.1;
+            currentY += (targetY - currentY) * 0.1;
+            canvas.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.1)`;
+            requestAnimationFrame(animate);
         }
+        animate();
     </script>
 </body>
 </html>
