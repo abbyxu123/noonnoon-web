@@ -17,6 +17,13 @@
             background-color: #f7f3f0; touch-action: none;
         }
 
+        /* Logo 样式 */
+        .header-logo {
+            position: absolute; top: 25px; left: 25px; z-index: 100;
+            font-weight: 800; font-size: 1.1rem; color: var(--primary-color);
+            cursor: pointer; letter-spacing: 2px;
+        }
+
         /* 背景层 */
         .bg-canvas {
             position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
@@ -26,12 +33,17 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* --- ☁️ 核心容器：锁定比例 --- */
+        /* --- ☁️ 造型回归：锁定你最满意的形状参数 --- */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%);
-            width: 25em; height: 18em; z-index: 10;
-            font-size: 16px; /* PC基准 */
+            /* 设定一个固定比例的容器，确保手机和网页造型一致 */
+            width: 440px; height: 280px; z-index: 10;
+        }
+
+        /* 针对小屏幕整体等比缩放容器，而不是改变气泡位置 */
+        @media screen and (max-width: 480px) {
+            .cloud-system { transform: translate(-50%, -50%) scale(0.75); }
         }
 
         .bubble-part {
@@ -39,23 +51,34 @@
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-radius: 50%; border: 2px solid #fff;
             transition: all 1.8s cubic-bezier(0.3, 0, 0.2, 1);
+            will-change: transform, opacity;
             box-shadow: 0 10px 45px rgba(0,0,0,0.06);
         }
 
-        /* --- ☁️ 造型布局 (基于 em) --- */
-        .p1 { width: 11em; height: 11em; top: -3.5em; left: 4.5em; z-index: 15; } 
-        .p2 { width: 12em; height: 12em; top: -4em; right: 4em; z-index: 15; } 
-        .p3 { width: 10em; height: 10em; top: 3em; left: 7.5em; z-index: 12; }
-        .p4 { width: 11.5em; height: 11.5em; bottom: 1em; left: -1em; z-index: 16; }   
-        .p5 { width: 15em; height: 15em; bottom: -1.5em; left: 5em; z-index: 17; } /* 核心圆块加大了 */
-        .p6 { width: 12em; height: 12em; bottom: 1em; right: -1em; z-index: 16; }
+        /* 气泡尖角 */
+        .bubble-part::after {
+            content: ''; position: absolute; width: 0; height: 0;
+            border-left: 12px solid transparent; border-right: 12px solid transparent;
+            border-top: 22px solid var(--bubble-bg);
+            bottom: -18px; left: 50%; transform: translateX(-50%) scale(0);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        /* --- 文字内容：垂直水平双向居中 --- */
+        /* --- ☁️ 完美的“双峰宽底”参数回归 --- */
+        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; }  /* 左上峰 */
+        .p2 { width: 170px; height: 170px; top: -45px; right: 75px; z-index: 15; } /* 右上峰 */
+        .p6 { width: 140px; height: 140px; top: 50px; left: 150px; z-index: 12; }  /* 中心补漏 */
+
+        .p4 { width: 165px; height: 165px; bottom: 20px; left: 0px; z-index: 16; }   /* 极左底 */
+        .p5 { width: 195px; height: 195px; bottom: -5px; left: 125px; z-index: 17; } /* 稳重中心底 */
+        .p6_2 { width: 175px; height: 175px; bottom: 20px; right: 0px; z-index: 16; } /* 极右底 */
+
+        /* --- 文字按钮绝对居中逻辑 --- */
         .cloud-content {
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; /* 关键：绝对居中 */
+            align-items: center; justify-content: center; /* 垂直水平绝对居中 */
             z-index: 30; text-align: center;
             pointer-events: none;
         }
@@ -63,58 +86,52 @@
 
         h1 { 
             color: var(--primary-color); 
-            font-size: 2.2em; /* 使用 em 随容器缩放 */
-            margin: 0; letter-spacing: 1px; 
+            font-size: 2.6rem; 
+            margin: 0; letter-spacing: 2px; 
         }
 
         p { 
             color: #444; 
-            font-size: 0.9em; 
-            line-height: 1.5; 
-            margin: 0.5em 2em 1.2em 2em; 
+            font-size: 0.95rem; 
+            line-height: 1.7; 
+            margin: 10px 40px 25px 40px; /* 侧边距防止文字贴边 */
             font-weight: 500;
         }
 
         .btn {
-            padding: 0.8em 2.2em; 
+            padding: 16px 50px; 
             background: linear-gradient(135deg, #ff8c00, #ffa502);
             color: white; text-decoration: none; 
             border-radius: 40px 15px 40px 15px;
-            font-weight: 600; font-size: 0.9em; 
+            font-weight: 600; font-size: 1rem; 
             transition: all 0.4s;
-            box-shadow: 0 8px 20px rgba(255,140,0,0.2);
+            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.25);
         }
 
-        /* --- 📱 移动端适配 --- */
-        @media screen and (max-width: 768px) {
-            .cloud-system { 
-                font-size: 11px; /* iPhone 15 Pro Max 缩放基准 */
-            }
-            h1 { font-size: 2em; }
-            p { font-size: 0.85em; }
-        }
-
-        /* 散开动效 */
-        .scatter .p1 { transform: translate(-5em, -20em) scale(0.5); opacity: 0; }
-        .scatter .p2 { transform: translate(5em, -20em) scale(0.5); opacity: 0; }
-        .scatter [class*="p3"] { transform: scale(0); opacity: 0; }
-        .scatter .p4 { transform: translate(-25em, 20em) rotate(-90deg); opacity: 0; }
-        .scatter .p5 { transform: translate(0, 30em) rotate(180deg); opacity: 0; }
-        .scatter .p6 { transform: translate(25em, 20em) rotate(90deg); opacity: 0; }
+        /* 散开动画轨迹保持不变 */
+        .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
+        .scatter .p1 { transform: translate(-100px, -350px) scale(0.5); opacity: 0; }
+        .scatter .p2 { transform: translate(100px, -350px) scale(0.5); opacity: 0; }
+        .scatter .p4 { transform: translate(-450px, 300px) rotate(-90deg); opacity: 0; }
+        .scatter .p5 { transform: translate(0, 500px) rotate(180deg); opacity: 0; }
+        .scatter [class*="p6"] { transform: scale(0); opacity: 0; }
+        .scatter .p6_2 { transform: translate(450px, 300px) rotate(90deg); opacity: 0; }
         .scatter .cloud-content { opacity: 0; }
-        .btn-active-glow { box-shadow: 0 0 50px #ff8c00, 0 0 100px rgba(255, 140, 0, 0.4); }
+        .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
+
     </style>
 </head>
 <body>
+    <div class="header-logo">NOONNOON</div>
     <div class="bg-canvas" id="canvas"></div>
 
     <div class="cloud-system" id="cloudSystem">
         <div class="bubble-part p1"></div>
         <div class="bubble-part p2"></div>
-        <div class="bubble-part p3"></div>
+        <div class="bubble-part p6"></div>
         <div class="bubble-part p4"></div>
         <div class="bubble-part p5"></div>
-        <div class="bubble-part p6"></div>
+        <div class="bubble-part p6_2"></div>
 
         <div class="cloud-content">
             <h1>noonnoon</h1>
