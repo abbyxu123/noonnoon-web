@@ -33,7 +33,7 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* 云朵系统：重构为“双峰宽底”结构 */
+        /* 云朵系统：双峰宽底、无缝衔接 */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 440px; height: 280px; z-index: 10;
@@ -57,19 +57,19 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- ☁️ Emoji 极致排练：左高右高，下面极宽 --- */
+        /* --- ☁️ 造型参数微调：上移底座、消除缝隙 --- */
         
-        /* 顶部双峰：左边一个，右边一个 */
-        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; }  /* 左上峰 */
-        .p2 { width: 170px; height: 170px; top: -45px; right: 70px; z-index: 15; } /* 右上峰 (略大一点) */
+        /* 1. 顶部双峰 */
+        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; } 
+        .p2 { width: 170px; height: 170px; top: -45px; right: 75px; z-index: 15; } 
         
-        /* 中间衔接块：填充双峰和底座之间的缝隙 */
-        .p3 { width: 140px; height: 140px; top: 30px; left: 150px; z-index: 14; }
+        /* 2. 核心补漏块：调大并上移，彻底封死中心缝隙 */
+        .p6 { width: 140px; height: 140px; top: 50px; left: 150px; z-index: 12; }
 
-        /* 超宽底座：三点一线拉平底部 */
-        .p4 { width: 160px; height: 160px; bottom: 0px; left: 0px; z-index: 16; }   /* 极左底 */
-        .p5 { width: 190px; height: 190px; bottom: -20px; left: 125px; z-index: 17; } /* 稳重中心底 */
-        .p6 { width: 170px; height: 170px; bottom: 0px; right: 0px; z-index: 16; }  /* 极右底 */
+        /* 3. 超宽底座：整体坐标上提，深度嵌入顶部圆群 */
+        .p4 { width: 165px; height: 165px; bottom: 20px; left: 0px; z-index: 16; }   /* 极左底 - 上移 */
+        .p5 { width: 195px; height: 195px; bottom: -5px; left: 125px; z-index: 17; } /* 稳重中心底 - 上移 */
+        .p6_2 { width: 175px; height: 175px; bottom: 20px; right: 0px; z-index: 16; } /* 极右底 - 上移 (这里更名防止重复) */
 
         .cloud-content {
             position: absolute; width: 100%; height: 100%; top: 30px; left: 0;
@@ -90,10 +90,10 @@
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
         .scatter .p1 { transform: translate(-100px, -350px) scale(0.5); opacity: 0; }
         .scatter .p2 { transform: translate(100px, -350px) scale(0.5); opacity: 0; }
-        .scatter .p3 { transform: scale(0); opacity: 0; }
         .scatter .p4 { transform: translate(-450px, 300px) rotate(-90deg); opacity: 0; }
         .scatter .p5 { transform: translate(0, 500px) rotate(180deg); opacity: 0; }
-        .scatter .p6 { transform: translate(450px, 300px) rotate(90deg); opacity: 0; }
+        .scatter [class*="p6"] { transform: scale(0); opacity: 0; }
+        .scatter .p6_2 { transform: translate(450px, 300px) rotate(90deg); opacity: 0; }
         
         .scatter .cloud-content { opacity: 0; pointer-events: none; }
         .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
@@ -110,10 +110,9 @@
     <div class="cloud-system" id="cloudSystem">
         <div class="bubble-part p1"></div>
         <div class="bubble-part p2"></div>
-        <div class="bubble-part p3"></div>
-        <div class="bubble-part p4"></div>
+        <div class="bubble-part p6"></div> <div class="bubble-part p4"></div>
         <div class="bubble-part p5"></div>
-        <div class="bubble-part p6"></div>
+        <div class="bubble-part p6_2"></div>
 
         <div class="cloud-content">
             <h1>noonnoon</h1>
