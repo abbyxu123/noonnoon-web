@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --bubble-bg: rgba(255, 255, 255, 0.93); 
+            --bubble-bg: rgba(255, 255, 255, 0.94); 
             --warm-light: rgba(255, 200, 50, 0.8);
         }
 
@@ -17,7 +17,7 @@
             background-color: #f7f3f0; touch-action: none;
         }
 
-        /* 1. Logo 彩蛋 */
+        /* Logo 彩蛋 */
         .header-logo {
             position: absolute; top: 25px; left: 25px; z-index: 100;
             font-weight: 800; font-size: 1.1rem; color: var(--primary-color);
@@ -25,7 +25,7 @@
         }
         .logo-glow { text-shadow: 0 0 25px var(--warm-light); transform: scale(1.1); }
 
-        /* 2. 背景层 */
+        /* 背景层 */
         .bg-canvas {
             position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
             background: url('picttest.JPG') center no-repeat;
@@ -34,10 +34,10 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(2px); }
 
-        /* 3. 对话气泡系统 - 模拟 ☁️ 造型 */
+        /* 云朵系统：6气泡堆叠架构 */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 350px; height: 220px; z-index: 10;
+            width: 380px; height: 260px; z-index: 10;
         }
 
         .bubble-part {
@@ -46,29 +46,30 @@
             border-radius: 50%; border: 1.5px solid #fff;
             transition: all 1.8s cubic-bezier(0.3, 0, 0.2, 1);
             will-change: transform, opacity;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
         }
 
-        /* 气泡尖角 💬 */
+        /* 对话气泡尖角 💬 */
         .bubble-part::after {
             content: ''; position: absolute; width: 0; height: 0;
             border-left: 12px solid transparent; border-right: 12px solid transparent;
-            border-top: 20px solid var(--bubble-bg);
+            border-top: 22px solid var(--bubble-bg);
             bottom: -18px; left: 50%; transform: translateX(-50%) scale(0);
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* 精确拼接 ☁️ 形状 */
-        .p1 { width: 160px; height: 160px; top: -30px; left: 95px; z-index: 15; } /* 云顶中心 */
-        .p2 { width: 130px; height: 130px; top: 30px; left: 0px; z-index: 14; }   /* 左翼 */
-        .p3 { width: 140px; height: 140px; top: 20px; right: 0px; z-index: 14; }  /* 右翼 */
-        .p4 { width: 110px; height: 110px; bottom: -20px; left: 60px; z-index: 13; } /* 底座左 */
-        .p5 { width: 120px; height: 120px; bottom: -15px; right: 50px; z-index: 13; } /* 底座右 */
+        /* 六气泡无缝拼接坐标 */
+        .p1 { width: 180px; height: 180px; top: -20px; left: 100px; z-index: 16; } /* 主顶 */
+        .p2 { width: 150px; height: 150px; top: 10px; left: 20px; z-index: 15; }   /* 左上 */
+        .p3 { width: 160px; height: 160px; top: 0px; right: 20px; z-index: 15; }  /* 右上 */
+        .p4 { width: 140px; height: 140px; bottom: -10px; left: 50px; z-index: 14; } /* 底左 */
+        .p5 { width: 140px; height: 140px; bottom: -15px; right: 40px; z-index: 14; } /* 底右 */
+        .p6 { width: 130px; height: 130px; top: 40px; left: 125px; z-index: 13; }  /* 核心填充块，消除缝隙 */
 
         .cloud-content {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 20; text-align: center; transition: opacity 0.4s;
+            z-index: 25; text-align: center; transition: opacity 0.4s;
         }
 
         h1 { color: var(--primary-color); font-size: 2.6rem; margin: 0; letter-spacing: 2px; }
@@ -80,19 +81,20 @@
             font-weight: 600; transition: all 0.4s;
         }
 
-        /* 4. 拨云见日散开 */
+        /* 散开动画：六路发射 */
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
-        .scatter .p1 { transform: scale(2.5) translate(0, -180px); opacity: 0; }
-        .scatter .p2 { transform: translate(-350px, -100px) rotate(-30deg); opacity: 0; }
-        .scatter .p3 { transform: translate(350px, -120px) rotate(30deg); opacity: 0; }
-        .scatter .p4 { transform: translate(-200px, 350px) rotate(-110deg); opacity: 0; }
-        .scatter .p5 { transform: translate(250px, 320px) rotate(110deg); opacity: 0; }
+        .scatter .p1 { transform: scale(2.5) translate(0, -220px); opacity: 0; }
+        .scatter .p2 { transform: translate(-380px, -150px) rotate(-30deg); opacity: 0; }
+        .scatter .p3 { transform: translate(380px, -180px) rotate(30deg); opacity: 0; }
+        .scatter .p4 { transform: translate(-250px, 380px) rotate(-110deg); opacity: 0; }
+        .scatter .p5 { transform: translate(250px, 350px) rotate(110deg); opacity: 0; }
+        .scatter .p6 { transform: scale(0.1); opacity: 0; } /* 中心块向内坍缩消失 */
+        
         .scatter .cloud-content { opacity: 0; pointer-events: none; }
-        .btn-active-glow { box-shadow: 0 0 50px #ff8c00, 0 0 100px rgba(255, 140, 0, 0.4); }
+        .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
 
         @media screen and (max-width: 768px) {
-            .cloud-system { width: 300px; transform: translate(-50%, -55%) scale(0.9); }
-            h1 { font-size: 2.1rem; }
+            .cloud-system { width: 320px; transform: translate(-50%, -50%) scale(0.85); }
         }
     </style>
 </head>
@@ -106,6 +108,7 @@
         <div class="bubble-part p3"></div>
         <div class="bubble-part p4"></div>
         <div class="bubble-part p5"></div>
+        <div class="bubble-part p6"></div>
 
         <div class="cloud-content">
             <h1>noonnoon</h1>
