@@ -6,9 +6,10 @@
     <title>noonnoon | 温暖你的每一个正午</title>
     <style>
         :root {
-            --primary-color: #ff8c00;
+            /* 1. 配色更新：改用浅暖棕色 */
+            --accent-warm-brown: #a68966; 
             --bubble-bg: rgba(255, 255, 255, 0.96); 
-            --warm-light: rgba(255, 200, 50, 0.8);
+            --warm-shadow: rgba(166, 137, 102, 0.15);
         }
 
         body, html {
@@ -17,11 +18,12 @@
             background-color: #f7f3f0; touch-action: none;
         }
 
-        /* Logo 样式 */
+        /* 2. Logo 样式：左上角不动，纯黑色 */
         .header-logo {
             position: absolute; top: 25px; left: 25px; z-index: 100;
-            font-weight: 800; font-size: 1.1rem; color: var(--primary-color);
-            cursor: pointer; letter-spacing: 2px;
+            font-weight: 800; font-size: 1.1rem; 
+            color: #000000; /* 纯黑色 */
+            cursor: default; letter-spacing: 2px;
         }
 
         /* 背景层 */
@@ -33,15 +35,14 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* --- ☁️ 造型回归：锁定你最满意的形状参数 --- */
+        /* ☁️ 核心容器：保持你最喜欢的“双峰宽底”比例 */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%);
-            /* 设定一个固定比例的容器，确保手机和网页造型一致 */
             width: 440px; height: 280px; z-index: 10;
         }
 
-        /* 针对小屏幕整体等比缩放容器，而不是改变气泡位置 */
+        /* 移动端整体等比缩放 */
         @media screen and (max-width: 480px) {
             .cloud-system { transform: translate(-50%, -50%) scale(0.75); }
         }
@@ -55,7 +56,7 @@
             box-shadow: 0 10px 45px rgba(0,0,0,0.06);
         }
 
-        /* 气泡尖角 */
+        /* 对话气泡尖角彩蛋 */
         .bubble-part::after {
             content: ''; position: absolute; width: 0; height: 0;
             border-left: 12px solid transparent; border-right: 12px solid transparent;
@@ -64,28 +65,27 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- ☁️ 完美的“双峰宽底”参数回归 --- */
-        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; }  /* 左上峰 */
-        .p2 { width: 170px; height: 170px; top: -45px; right: 75px; z-index: 15; } /* 右上峰 */
-        .p6 { width: 140px; height: 140px; top: 50px; left: 150px; z-index: 12; }  /* 中心补漏 */
+        /* 完美造型参数回归 */
+        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; } 
+        .p2 { width: 170px; height: 170px; top: -45px; right: 75px; z-index: 15; } 
+        .p6 { width: 140px; height: 140px; top: 50px; left: 150px; z-index: 12; } 
+        .p4 { width: 165px; height: 165px; bottom: 20px; left: 0px; z-index: 16; }   
+        .p5 { width: 195px; height: 195px; bottom: -5px; left: 125px; z-index: 17; } 
+        .p6_2 { width: 175px; height: 175px; bottom: 20px; right: 0px; z-index: 16; } 
 
-        .p4 { width: 165px; height: 165px; bottom: 20px; left: 0px; z-index: 16; }   /* 极左底 */
-        .p5 { width: 195px; height: 195px; bottom: -5px; left: 125px; z-index: 17; } /* 稳重中心底 */
-        .p6_2 { width: 175px; height: 175px; bottom: 20px; right: 0px; z-index: 16; } /* 极右底 */
-
-        /* --- 文字按钮绝对居中逻辑 --- */
+        /* 文字按钮绝对居中内容 */
         .cloud-content {
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; /* 垂直水平绝对居中 */
+            align-items: center; justify-content: center;
             z-index: 30; text-align: center;
             pointer-events: none;
         }
         .cloud-content > * { pointer-events: auto; }
 
         h1 { 
-            color: var(--primary-color); 
+            color: var(--accent-warm-brown); /* 标题改为暖棕色 */
             font-size: 2.6rem; 
             margin: 0; letter-spacing: 2px; 
         }
@@ -94,21 +94,27 @@
             color: #444; 
             font-size: 0.95rem; 
             line-height: 1.7; 
-            margin: 10px 40px 25px 40px; /* 侧边距防止文字贴边 */
+            margin: 10px 40px 25px 40px; 
             font-weight: 500;
         }
 
+        /* 3. 按钮样式更新：浅暖棕色 */
         .btn {
             padding: 16px 50px; 
-            background: linear-gradient(135deg, #ff8c00, #ffa502);
+            background: var(--accent-warm-brown); /* 暖棕色 */
             color: white; text-decoration: none; 
             border-radius: 40px 15px 40px 15px;
             font-weight: 600; font-size: 1rem; 
             transition: all 0.4s;
-            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.25);
+            box-shadow: 0 10px 20px var(--warm-shadow);
         }
 
-        /* 散开动画轨迹保持不变 */
+        /* 点击发光动效改为暖色柔光 */
+        .btn-active-glow { 
+            box-shadow: 0 0 40px var(--accent-warm-brown), 0 0 80px rgba(166, 137, 102, 0.3); 
+        }
+
+        /* 散开动画 */
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
         .scatter .p1 { transform: translate(-100px, -350px) scale(0.5); opacity: 0; }
         .scatter .p2 { transform: translate(100px, -350px) scale(0.5); opacity: 0; }
@@ -117,12 +123,12 @@
         .scatter [class*="p6"] { transform: scale(0); opacity: 0; }
         .scatter .p6_2 { transform: translate(450px, 300px) rotate(90deg); opacity: 0; }
         .scatter .cloud-content { opacity: 0; }
-        .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
 
     </style>
 </head>
 <body>
     <div class="header-logo">NOONNOON</div>
+    
     <div class="bg-canvas" id="canvas"></div>
 
     <div class="cloud-system" id="cloudSystem">
