@@ -17,7 +17,7 @@
             background-color: #f7f3f0; touch-action: none;
         }
 
-        /* Logo 彩蛋 */
+        /* Logo 样式 */
         .header-logo {
             position: absolute; top: 25px; left: 25px; z-index: 100;
             font-weight: 800; font-size: 1.1rem; color: var(--primary-color);
@@ -33,10 +33,10 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* 云朵系统：重构比例为超宽底座 */
+        /* 云朵系统：重构为“双峰宽底”结构 */
         .cloud-system {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%);
-            width: 420px; height: 260px; z-index: 10;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 440px; height: 280px; z-index: 10;
         }
 
         .bubble-part {
@@ -48,7 +48,7 @@
             box-shadow: 0 10px 45px rgba(0,0,0,0.06);
         }
 
-        /* 对话气泡尖角彩蛋 */
+        /* 对话气泡尖角 */
         .bubble-part::after {
             content: ''; position: absolute; width: 0; height: 0;
             border-left: 12px solid transparent; border-right: 12px solid transparent;
@@ -57,22 +57,22 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- ☁️ 极致造型逻辑：大幅度增加底座宽度 --- */
+        /* --- ☁️ Emoji 极致排练：左高右高，下面极宽 --- */
         
-        /* 顶端：保持窄而聚拢 */
-        .p1 { width: 160px; height: 160px; top: -45px; left: 130px; z-index: 15; } 
+        /* 顶部双峰：左边一个，右边一个 */
+        .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; }  /* 左上峰 */
+        .p2 { width: 170px; height: 170px; top: -45px; right: 70px; z-index: 15; } /* 右上峰 (略大一点) */
         
-        /* 中间过渡层：深度重叠，消除缝隙 */
-        .p2 { width: 140px; height: 140px; top: 15px; left: 85px; z-index: 14; }
-        .p3 { width: 140px; height: 140px; top: 15px; right: 85px; z-index: 14; }
+        /* 中间衔接块：填充双峰和底座之间的缝隙 */
+        .p3 { width: 140px; height: 140px; top: 30px; left: 150px; z-index: 14; }
 
-        /* 宽大底座：三个超大圆圈横向排开，建立极宽的底面 */
-        .p4 { width: 150px; height: 150px; bottom: 0px; left: 0px; z-index: 16; }   /* 极左底 */
-        .p5 { width: 180px; height: 180px; bottom: -25px; left: 120px; z-index: 17; } /* 超大中心底座 */
-        .p6 { width: 150px; height: 150px; bottom: 0px; right: 0px; z-index: 16; }  /* 极右底 */
+        /* 超宽底座：三点一线拉平底部 */
+        .p4 { width: 160px; height: 160px; bottom: 0px; left: 0px; z-index: 16; }   /* 极左底 */
+        .p5 { width: 190px; height: 190px; bottom: -20px; left: 125px; z-index: 17; } /* 稳重中心底 */
+        .p6 { width: 170px; height: 170px; bottom: 0px; right: 0px; z-index: 16; }  /* 极右底 */
 
         .cloud-content {
-            position: absolute; width: 100%; height: 100%; top: 35px; left: 0;
+            position: absolute; width: 100%; height: 100%; top: 30px; left: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 30; text-align: center; transition: opacity 0.4s;
         }
@@ -88,19 +88,18 @@
 
         /* 散开动效 */
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
-        .scatter .p1 { transform: scale(2.2) translate(0, -300px); opacity: 0; }
-        .scatter .p2 { transform: translate(-380px, -180px) rotate(-30deg); opacity: 0; }
-        .scatter .p3 { transform: translate(380px, -180px) rotate(30deg); opacity: 0; }
-        .scatter .p4 { transform: translate(-400px, 350px) rotate(-90deg); opacity: 0; }
-        .scatter .p5 { transform: translate(0, 450px) rotate(180deg); opacity: 0; }
-        .scatter .p6 { transform: translate(400px, 350px) rotate(90deg); opacity: 0; }
+        .scatter .p1 { transform: translate(-100px, -350px) scale(0.5); opacity: 0; }
+        .scatter .p2 { transform: translate(100px, -350px) scale(0.5); opacity: 0; }
+        .scatter .p3 { transform: scale(0); opacity: 0; }
+        .scatter .p4 { transform: translate(-450px, 300px) rotate(-90deg); opacity: 0; }
+        .scatter .p5 { transform: translate(0, 500px) rotate(180deg); opacity: 0; }
+        .scatter .p6 { transform: translate(450px, 300px) rotate(90deg); opacity: 0; }
         
         .scatter .cloud-content { opacity: 0; pointer-events: none; }
         .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
 
         @media screen and (max-width: 768px) {
-            /* 手机端适当缩放以适配 Pro Max 屏幕 */
-            .cloud-system { width: 340px; transform: translate(-50%, -50%) scale(0.8); }
+            .cloud-system { width: 360px; transform: translate(-50%, -50%) scale(0.78); }
         }
     </style>
 </head>
