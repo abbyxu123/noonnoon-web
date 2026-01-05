@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>noonnoon | 温暖你的每一个正午</title>
+    <title>noon noon | 温暖你的每一个正午</title>
     <style>
         :root {
-            /* 1. 配色更新：改用浅暖棕色 */
-            --accent-warm-brown: #a68966; 
+            --warm-sun-orange: #ff8c00; /* 你提供的精准橙色 */
             --bubble-bg: rgba(255, 255, 255, 0.96); 
-            --warm-shadow: rgba(166, 137, 102, 0.15);
+            --orange-shadow: rgba(255, 140, 0, 0.3);
         }
 
         body, html {
@@ -18,11 +17,11 @@
             background-color: #f7f3f0; touch-action: none;
         }
 
-        /* 2. Logo 样式：左上角不动，纯黑色 */
+        /* Logo 样式：左上角纯黑色 */
         .header-logo {
             position: absolute; top: 25px; left: 25px; z-index: 100;
             font-weight: 800; font-size: 1.1rem; 
-            color: #000000; /* 纯黑色 */
+            color: #000000;
             cursor: default; letter-spacing: 2px;
         }
 
@@ -35,14 +34,14 @@
         }
         .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* ☁️ 核心容器：保持你最喜欢的“双峰宽底”比例 */
+        /* ☁️ 核心容器：锁定双峰宽底造型 */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%);
             width: 440px; height: 280px; z-index: 10;
         }
 
-        /* 移动端整体等比缩放 */
+        /* 移动端等比缩放 */
         @media screen and (max-width: 480px) {
             .cloud-system { transform: translate(-50%, -50%) scale(0.75); }
         }
@@ -56,16 +55,7 @@
             box-shadow: 0 10px 45px rgba(0,0,0,0.06);
         }
 
-        /* 对话气泡尖角彩蛋 */
-        .bubble-part::after {
-            content: ''; position: absolute; width: 0; height: 0;
-            border-left: 12px solid transparent; border-right: 12px solid transparent;
-            border-top: 22px solid var(--bubble-bg);
-            bottom: -18px; left: 50%; transform: translateX(-50%) scale(0);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* 完美造型参数回归 */
+        /* 云朵造型坐标回归 */
         .p1 { width: 155px; height: 155px; top: -35px; left: 80px; z-index: 15; } 
         .p2 { width: 170px; height: 170px; top: -45px; right: 75px; z-index: 15; } 
         .p6 { width: 140px; height: 140px; top: 50px; left: 150px; z-index: 12; } 
@@ -73,7 +63,7 @@
         .p5 { width: 195px; height: 195px; bottom: -5px; left: 125px; z-index: 17; } 
         .p6_2 { width: 175px; height: 175px; bottom: 20px; right: 0px; z-index: 16; } 
 
-        /* 文字按钮绝对居中内容 */
+        /* 文字内容绝对居中 */
         .cloud-content {
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%;
@@ -84,10 +74,13 @@
         }
         .cloud-content > * { pointer-events: auto; }
 
+        /* 标题：noon noon (加了空格并微调字间距) */
         h1 { 
-            color: var(--accent-warm-brown); /* 标题改为暖棕色 */
-            font-size: 2.6rem; 
-            margin: 0; letter-spacing: 2px; 
+            color: var(--warm-sun-orange); 
+            font-size: 2.7rem; 
+            margin: 0; 
+            letter-spacing: 3px; /* 增加一点字间距配合空格 */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         p { 
@@ -98,23 +91,23 @@
             font-weight: 500;
         }
 
-        /* 3. 按钮样式更新：浅暖棕色 */
+        /* 按钮样式 */
         .btn {
-            padding: 16px 50px; 
-            background: var(--accent-warm-brown); /* 暖棕色 */
+            padding: 16px 52px; 
+            background: var(--warm-sun-orange); 
             color: white; text-decoration: none; 
             border-radius: 40px 15px 40px 15px;
             font-weight: 600; font-size: 1rem; 
             transition: all 0.4s;
-            box-shadow: 0 10px 20px var(--warm-shadow);
+            box-shadow: 0 10px 25px var(--orange-shadow);
         }
 
-        /* 点击发光动效改为暖色柔光 */
         .btn-active-glow { 
-            box-shadow: 0 0 40px var(--accent-warm-brown), 0 0 80px rgba(166, 137, 102, 0.3); 
+            box-shadow: 0 0 50px var(--warm-sun-orange), 0 0 100px rgba(255, 140, 0, 0.4); 
+            transform: scale(0.96);
         }
 
-        /* 散开动画 */
+        /* 散开动画轨迹 */
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
         .scatter .p1 { transform: translate(-100px, -350px) scale(0.5); opacity: 0; }
         .scatter .p2 { transform: translate(100px, -350px) scale(0.5); opacity: 0; }
@@ -127,9 +120,7 @@
     </style>
 </head>
 <body>
-    <div class="header-logo">NOONNOON</div>
-    
-    <div class="bg-canvas" id="canvas"></div>
+    <div class="header-logo">noon noon</div> <div class="bg-canvas" id="canvas"></div>
 
     <div class="cloud-system" id="cloudSystem">
         <div class="bubble-part p1"></div>
@@ -140,8 +131,7 @@
         <div class="bubble-part p6_2"></div>
 
         <div class="cloud-content">
-            <h1>noonnoon</h1>
-            <p>在正午，化解所有沟通的误解。<br>你的情绪伙伴已就绪。</p>
+            <h1>noon noon</h1> <p>在正午，化解所有沟通的误解。<br>你的情绪伙伴已就绪。</p>
             <a href="javascript:void(0)" class="btn" id="startBtn">开始对话</a>
         </div>
     </div>
