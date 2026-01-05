@@ -1,113 +1,29 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>noonnoon | 温暖你的每一个正午</title>
-    <style>
-        :root {
-            --primary-color: #ff8c00;
-            --glass-bg: rgba(255, 255, 255, 0.45); /* 降低了透明度，让后面更通透 */
-        }
+/* 增加背景色块感与插画的融合 */
+.bg-canvas::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(255,140,0,0.1) 0%, rgba(100,181,246,0.1) 100%);
+    mix-blend-mode: overlay; /* 让色块与插画完美叠加 */
+}
 
-        body, html { height: 100%; margin: 0; overflow: hidden; background-color: #f7f3f0; }
+/* 按钮的交互感增强 */
+.btn {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, #ff8c00, #ffa502);
+}
 
-        .viewport {
-            position: relative; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            perspective: 1000px;
-        }
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: rgba(255,255,255,0.2);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    left: -150%;
+}
 
-        /* 1. 底图层：保持平滑跟踪 */
-        .bg-canvas {
-            position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
-            background: url('picttest.JPG') center no-repeat;
-            background-size: cover;
-            z-index: 1;
-            will-change: transform;
-            transition: transform 0.2s cubic-bezier(0.1, 0.5, 0.2, 1);
-        }
-
-        /* 2. 新增：浮动元素层 (如果你有切好的透明PNG，取消下面的注释) */
-        .floating-ip {
-            position: absolute;
-            z-index: 5; /* 位于背景和卡片之间 */
-            width: 150px; 
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-            animation: floatAnim 4s infinite ease-in-out;
-            pointer-events: none; /* 不遮挡鼠标点击 */
-        }
-
-        @keyframes floatAnim {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
-        }
-
-        /* 3. 核心卡片优化：更精致、比例更小 */
-        .main-card {
-            position: relative; z-index: 10;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px) saturate(140%);
-            -webkit-backdrop-filter: blur(15px) saturate(140%);
-            padding: 40px 30px; /* 减小内边距 */
-            border-radius: 40px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-            max-width: 320px; /* 重点：限制了宽度，不再显得太庞大 */
-            width: 85%;
-            animation: cardEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.4rem; margin: 0; /* 缩小字号 */
-            font-weight: 800; letter-spacing: -1px;
-        }
-
-        p {
-            color: #444; font-size: 1rem; /* 缩小字号 */
-            line-height: 1.6; margin: 15px 0 30px 0;
-        }
-
-        .btn {
-            display: inline-block; padding: 14px 40px;
-            background: var(--primary-color);
-            color: white; text-decoration: none;
-            border-radius: 100px; font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 15px rgba(255, 140, 0, 0.25);
-        }
-
-        .btn:hover { transform: translateY(-3px) scale(1.05); }
-
-        .footer { position: absolute; bottom: 20px; z-index: 10; color: rgba(0,0,0,0.2); font-size: 0.75rem; }
-    </style>
-</head>
-<body>
-
-    <div class="viewport">
-        <div class="bg-canvas" id="canvas"></div>
-
-        <div class="main-card">
-            <h1>noonnoon</h1>
-            <p>在正午，化解所有沟通的误解。<br>你的 AI 情感陪伴伙伴已就绪。</p>
-            <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
-        </div>
-
-        <div class="footer">© 2026 noonnoon.live</div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('canvas');
-        document.addEventListener('mousemove', (e) => {
-            const xPercent = (e.clientX / window.innerWidth) - 0.5;
-            const yPercent = (e.clientY / window.innerHeight) - 0.5;
-            // 降低背景位移幅度，增强深邃感
-            const moveX = xPercent * 25; 
-            const moveY = yPercent * 25;
-            canvas.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.05)`;
-        });
-    </script>
-</body>
-</html>
+.btn:hover::before {
+    left: 150%; /* 鼠标滑过时一道光闪过，增加精致感 */
+}
