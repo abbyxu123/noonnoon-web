@@ -7,142 +7,171 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --cloud-white: rgba(255, 255, 255, 0.65);
+            --warm-light: rgba(255, 200, 50, 0.6);
         }
 
         body, html {
             height: 100%; margin: 0; overflow: hidden;
-            /* 字体优化：优先使用衬线体增强人文气质 */
-            font-family: "Optima", "Charter", "Georgia", "PingFang SC", serif;
+            font-family: "Optima", "Charter", "PingFang SC", serif;
             background-color: #f7f3f0;
             touch-action: none;
         }
 
-        .viewport {
-            position: relative; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+        /* 视口容器：用于镜头拉近效果 */
+        .viewport-container {
+            width: 100vw; height: 100vh;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* 镜头拉近的平滑度 */
         }
 
-        /* 动态背景层 */
+        /* 镜头拉近的状态 */
+        .zoom-active {
+            transform: scale(2.5); /* 拉近倍数 */
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        /* 1. 左上角 Logo 彩蛋 */
+        .header-logo {
+            position: absolute; top: 25px; left: 25px; z-index: 100;
+            font-family: "Optima", serif; font-weight: 800; font-size: 1.2rem;
+            color: var(--primary-color); cursor: pointer;
+            letter-spacing: 2px; padding: 10px;
+            transition: all 0.3s ease;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Logo 点击发光彩蛋效果 */
+        .logo-glow {
+            text-shadow: 0 0 15px var(--warm-light), 0 0 30px var(--warm-light);
+            transform: scale(1.1);
+        }
+
+        /* 2. 背景层 */
         .bg-canvas {
             position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
             background: url('picttest.JPG') center no-repeat;
             background-size: cover; z-index: 1;
             will-change: transform;
-            /* 增强跟手感 */
-            transition: transform 0.15s ease-out;
         }
 
-        /* 云朵造型容器：增加 ☁️ 标志性的多个半圆弧度 */
+        /* 3. 云朵容器 */
         .cloud-wrapper {
-            position: relative; z-index: 10;
-            max-width: 360px; width: 85%;
-            filter: drop-shadow(0 25px 40px rgba(0,0,0,0.08));
-            animation: cloudFloat 6s infinite ease-in-out;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10; width: 85%; max-width: 360px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .cloud-body {
-            background: var(--cloud-white);
+            background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(20px) saturate(140%);
             -webkit-backdrop-filter: blur(20px) saturate(140%);
-            padding: 50px 35px;
-            /* 类似 Emoji ☁️ 的多重弧度圆角 */
-            border-radius: 60% 60% 55% 55% / 70% 70% 45% 45%;
-            position: relative;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.4);
+            padding: 50px 35px; border-radius: 60% 60% 55% 55% / 70% 70% 45% 45%;
+            position: relative; text-align: center; border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.05);
+            animation: cloudFloat 6s infinite ease-in-out;
         }
 
-        /* 云朵左右的小圆弧细节 */
-        .cloud-body::before {
-            content: ''; position: absolute; width: 110px; height: 110px;
-            background: inherit; border-radius: 50%; top: -35px; left: 15%; z-index: -1;
+        /* 云朵弧度细节 */
+        .cloud-body::before, .cloud-body::after {
+            content: ''; position: absolute; background: inherit; border-radius: 50%; z-index: -1;
         }
-        .cloud-body::after {
-            content: ''; position: absolute; width: 130px; height: 130px;
-            background: inherit; border-radius: 50%; top: -45px; right: 20%; z-index: -1;
-        }
+        .cloud-body::before { width: 100px; height: 100px; top: -35px; left: 15%; }
+        .cloud-body::after { width: 130px; height: 130px; top: -45px; right: 20%; }
 
         @keyframes cloudFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-12px); }
         }
 
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.8rem; margin: 0;
-            font-weight: 700; letter-spacing: 3px; /* 增加字间距，显得更高级、轻快 */
-        }
+        h1 { color: var(--primary-color); font-size: 2.8rem; margin: 0; letter-spacing: 3px; }
+        p { color: #555; font-size: 0.95rem; line-height: 1.8; margin: 18px 0 35px 0; }
 
-        p {
-            color: #555; font-size: 1rem;
-            line-height: 1.8; margin: 18px 0 35px 0;
-            letter-spacing: 0.8px; /* 增加正文字间距，提升易读性 */
-        }
-
-        /* 讨巧的异形按钮：非对称圆角 */
+        /* 4. 开始对话按钮：暖暖的发光 */
         .btn {
-            display: inline-block;
-            padding: 15px 50px;
+            display: inline-block; padding: 15px 50px;
             background: linear-gradient(135deg, #ff8c00, #ffa502);
-            color: white; text-decoration: none;
-            border-radius: 40px 15px 40px 15px; 
-            font-weight: 600; font-size: 1.05rem;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
+            color: white; text-decoration: none; border-radius: 40px 15px 40px 15px;
+            font-weight: 600; transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.2);
+            position: relative;
         }
 
-        .btn:active { transform: scale(0.96); }
+        /* 按钮按下时的发光效果 */
+        .btn-active-glow {
+            box-shadow: 0 0 30px #ff8c00, 0 0 60px rgba(255, 140, 0, 0.4) !important;
+            transform: scale(0.95);
+        }
 
-        /* 针对大屏手机 Pro Max 优化 */
         @media screen and (max-width: 768px) {
             .cloud-wrapper { max-width: 280px; }
             h1 { font-size: 2.2rem; }
-            p { font-size: 0.88rem; line-height: 1.6; }
+            .header-logo { top: 20px; left: 20px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="viewport">
+    <div class="header-logo" id="logoEgg">NOONNOON</div>
+
+    <div class="viewport-container" id="mainViewport">
         <div class="bg-canvas" id="canvas"></div>
 
         <div class="cloud-wrapper">
             <div class="cloud-body">
                 <h1>noonnoon</h1>
                 <p>在正午，化解所有沟通的误解。<br>你的情绪伙伴已就绪。</p>
-                <a href="https://nl.lovewhowho.net/noonnoon/" class="btn">开始对话</a>
+                <a href="javascript:void(0)" class="btn" id="startBtn">开始对话</a>
             </div>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
-        let currentX = 0, currentY = 0;
-        let targetX = 0, targetY = 0;
+        const logoEgg = document.getElementById('logoEgg');
+        const startBtn = document.getElementById('startBtn');
+        const mainViewport = document.getElementById('mainViewport');
 
-        // 触屏滑动：记录手指滑动位置并平滑移动背景
-        document.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            // 计算偏移量并乘以灵敏度
-            targetX = (touch.clientX / window.innerWidth - 0.5) * 45;
-            targetY = (touch.clientY / window.innerHeight - 0.5) * 45;
+        // 1. Logo 点击彩蛋：发出温暖的光
+        logoEgg.addEventListener('touchstart', (e) => {
+            logoEgg.classList.add('logo-glow');
+            setTimeout(() => logoEgg.classList.remove('logo-glow'), 1000);
+        });
+        logoEgg.addEventListener('click', () => {
+            logoEgg.classList.add('logo-glow');
+            setTimeout(() => logoEgg.classList.remove('logo-glow'), 1000);
         });
 
-        // 鼠标感应
-        document.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX / window.innerWidth - 0.5) * 35;
-            targetY = (e.clientY / window.innerHeight - 0.5) * 35;
+        // 2. 开始对话：拉近镜头 + 按钮光效
+        startBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // 按钮光效
+            this.classList.add('btn-active-glow');
+            // 延迟一点点触发镜头拉近
+            setTimeout(() => {
+                mainViewport.classList.add('zoom-active');
+                // 3秒后真正跳转
+                setTimeout(() => {
+                    window.location.href = "https://nl.lovewhowho.net/noonnoon/";
+                }, 1500);
+            }, 300);
         });
 
-        // 平滑动画循环 (Lerp 算法，让滑动不生硬)
-        function animate() {
-            currentX += (targetX - currentX) * 0.1;
-            currentY += (targetY - currentY) * 0.1;
-            canvas.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.1)`;
-            requestAnimationFrame(animate);
+        // 3. 丝滑背景滑动
+        let targetX = 0, targetY = 0, currX = 0, currY = 0;
+        const updatePos = (x, y) => {
+            targetX = (x / window.innerWidth - 0.5) * 45;
+            targetY = (y / window.innerHeight - 0.5) * 45;
+        };
+        document.addEventListener('mousemove', e => updatePos(e.clientX, e.clientY));
+        document.addEventListener('touchmove', e => updatePos(e.touches[0].clientX, e.touches[0].clientY));
+
+        function anim() {
+            currX += (targetX - currX) * 0.1;
+            currY += (targetY - currY) * 0.1;
+            canvas.style.transform = `translate3d(${currX}px, ${currY}px, 0) scale(1.1)`;
+            requestAnimationFrame(anim);
         }
-        animate();
+        anim();
     </script>
 </body>
 </html>
