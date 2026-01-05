@@ -7,7 +7,9 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --warm-light: rgba(255, 200, 50, 0.7);
+            /* 关键修改：调高不透明度，增强实体感 */
+            --bubble-bg: rgba(255, 255, 255, 0.9); 
+            --warm-light: rgba(255, 200, 50, 0.8);
         }
 
         body, html {
@@ -22,41 +24,44 @@
             font-weight: 800; font-size: 1.1rem; color: var(--primary-color);
             cursor: pointer; letter-spacing: 2px; transition: all 0.3s;
         }
-        .logo-glow { text-shadow: 0 0 20px var(--warm-light); transform: scale(1.1); }
+        .logo-glow { text-shadow: 0 0 25px var(--warm-light); transform: scale(1.1); }
 
         /* 2. 背景层 */
         .bg-canvas {
             position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
             background: url('picttest.JPG') center no-repeat;
             background-size: cover; z-index: 1;
-            transition: transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .bg-zoom-active { transform: scale(1.45) !important; filter: saturate(1.2); }
+        .bg-zoom-active { transform: scale(1.5) !important; filter: blur(2px); }
 
-        /* 3. 云朵/对话气泡系统 */
+        /* 3. 对话气泡系统 */
         .cloud-system {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 320px; height: 250px; z-index: 10;
         }
 
-        /* 气泡零件基础样式 */
+        /* 气泡零件：强化了底色，形状更明确 */
         .bubble-part {
-            position: absolute; background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(22px) saturate(140%);
-            -webkit-backdrop-filter: blur(22px) saturate(140%);
-            border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
+            position: absolute; 
+            background: var(--bubble-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50%; 
+            border: 1.5px solid rgba(255,255,255,1); /* 纯白描边增强轮廓 */
             transition: all 1.8s cubic-bezier(0.3, 0, 0.2, 1);
             will-change: transform, opacity;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.06);
         }
 
-        /* 气泡尖角（默认隐藏） */
+        /* 气泡尖角 💬 */
         .bubble-part::after {
             content: ''; position: absolute; width: 0; height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 25px solid rgba(255, 255, 255, 0.5);
-            bottom: -15px; left: 50%; transform: translateX(-50%) scale(0);
-            transition: transform 0.8s ease;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid var(--bubble-bg);
+            bottom: -18px; left: 50%; transform: translateX(-50%) scale(0);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         /* 拼接位置 */
@@ -66,11 +71,10 @@
         .p4 { width: 140px; height: 140px; bottom: -15px; left: -10px; z-index: 11; }
         .p5 { width: 120px; height: 120px; bottom: -5px; right: -5px; z-index: 11; }
 
-        /* 内容层 */
         .cloud-content {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 20; text-align: center; transition: opacity 0.5s ease-out;
+            z-index: 20; text-align: center; transition: opacity 0.4s;
         }
 
         h1 { color: var(--primary-color); font-size: 2.7rem; margin: 0; letter-spacing: 3px; }
@@ -79,27 +83,18 @@
         .btn {
             padding: 16px 48px; background: linear-gradient(135deg, #ff8c00, #ffa502);
             color: white; text-decoration: none; border-radius: 40px 15px 40px 15px;
-            font-weight: 600; transition: 0.4s; box-shadow: 0 10px 20px rgba(255,140,0,0.2);
-            position: relative; overflow: hidden;
+            font-weight: 600; transition: all 0.4s;
         }
 
-        /* 4. 散开动效：露出气泡尖角并弹射 */
-        .scatter .bubble-part::after { transform: translateX(-50%) scale(1); } /* 露出尾巴 */
-        
+        /* 4. 散开动效 */
+        .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
         .scatter .p1 { transform: scale(2.5) translate(0, -150px); opacity: 0; }
-        .scatter .p2 { transform: translate(-350px, -250px) rotate(-45deg); opacity: 0; }
-        .scatter .p3 { transform: translate(350px, -280px) rotate(45deg); opacity: 0; }
-        .scatter .p4 { transform: translate(-320px, 350px) rotate(-135deg); opacity: 0; }
-        .scatter .p5 { transform: translate(320px, 250px) rotate(135deg); opacity: 0; }
-        
+        .scatter .p2 { transform: translate(-320px, -250px) rotate(-30deg); opacity: 0; }
+        .scatter .p3 { transform: translate(320px, -280px) rotate(30deg); opacity: 0; }
+        .scatter .p4 { transform: translate(-300px, 320px) rotate(-110deg); opacity: 0; }
+        .scatter .p5 { transform: translate(300px, 220px) rotate(110deg); opacity: 0; }
         .scatter .cloud-content { opacity: 0; pointer-events: none; }
         .btn-active-glow { box-shadow: 0 0 50px #ff8c00, 0 0 100px rgba(255, 140, 0, 0.4); }
-
-        @media screen and (max-width: 768px) {
-            .cloud-system { width: 280px; }
-            h1 { font-size: 2.2rem; }
-            p { font-size: 0.85rem; padding: 0 10px; }
-        }
     </style>
 </head>
 <body>
@@ -127,28 +122,20 @@
         const cloudSystem = document.getElementById('cloudSystem');
         const logoEgg = document.getElementById('logoEgg');
 
-        // 1. Logo 点击发光
         logoEgg.addEventListener('click', () => {
             logoEgg.classList.add('logo-glow');
             setTimeout(() => logoEgg.classList.remove('logo-glow'), 1000);
         });
 
-        // 2. 拨云见日交互逻辑
         startBtn.addEventListener('click', function() {
             this.classList.add('btn-active-glow');
-            
-            // 第一步：露出气泡尖角
             cloudSystem.classList.add('scatter');
-            // 第二步：背景拉近
             canvas.classList.add('bg-zoom-active');
-            
-            // 第三步：转场
             setTimeout(() => {
                 window.location.href = "https://nl.lovewhowho.net/noonnoon/";
-            }, 1900);
+            }, 2000);
         });
 
-        // 3. 丝滑背景滑动
         let tX = 0, tY = 0, cX = 0, cY = 0;
         const update = (x, y) => {
             tX = (x / window.innerWidth - 0.5) * 45;
