@@ -31,12 +31,12 @@
             background-size: cover; z-index: 1;
             transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .bg-zoom-active { transform: scale(1.5) !important; filter: blur(4px); }
+        .bg-zoom-active { transform: scale(1.5) !important; filter: blur(5px); }
 
-        /* 云朵系统 - 强化下宽上窄结构 */
+        /* 云朵系统：重构比例为超宽底座 */
         .cloud-system {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 400px; height: 240px; z-index: 10;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%);
+            width: 420px; height: 260px; z-index: 10;
         }
 
         .bubble-part {
@@ -45,10 +45,10 @@
             border-radius: 50%; border: 2px solid #fff;
             transition: all 1.8s cubic-bezier(0.3, 0, 0.2, 1);
             will-change: transform, opacity;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 45px rgba(0,0,0,0.06);
         }
 
-        /* 对话气泡尖角 */
+        /* 对话气泡尖角彩蛋 */
         .bubble-part::after {
             content: ''; position: absolute; width: 0; height: 0;
             border-left: 12px solid transparent; border-right: 12px solid transparent;
@@ -57,46 +57,50 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- ☁️ Emoji 比例重新建模 --- */
-        /* 1. 顶端窄部：最高的圆包 */
-        .p1 { width: 150px; height: 150px; top: -40px; left: 125px; z-index: 15; } 
-        /* 2. 中层过渡 */
-        .p2 { width: 130px; height: 130px; top: 10px; left: 70px; z-index: 14; }
-        .p3 { width: 140px; height: 140px; top: 10px; right: 60px; z-index: 14; }
-        /* 3. 宽大底座：三个圆并排拉宽底部 */
-        .p4 { width: 130px; height: 130px; bottom: 0px; left: 20px; z-index: 16; } 
-        .p5 { width: 140px; height: 140px; bottom: -10px; left: 130px; z-index: 16; } 
-        .p6 { width: 130px; height: 130px; bottom: 0px; right: 20px; z-index: 16; }
+        /* --- ☁️ 极致造型逻辑：大幅度增加底座宽度 --- */
+        
+        /* 顶端：保持窄而聚拢 */
+        .p1 { width: 160px; height: 160px; top: -45px; left: 130px; z-index: 15; } 
+        
+        /* 中间过渡层：深度重叠，消除缝隙 */
+        .p2 { width: 140px; height: 140px; top: 15px; left: 85px; z-index: 14; }
+        .p3 { width: 140px; height: 140px; top: 15px; right: 85px; z-index: 14; }
+
+        /* 宽大底座：三个超大圆圈横向排开，建立极宽的底面 */
+        .p4 { width: 150px; height: 150px; bottom: 0px; left: 0px; z-index: 16; }   /* 极左底 */
+        .p5 { width: 180px; height: 180px; bottom: -25px; left: 120px; z-index: 17; } /* 超大中心底座 */
+        .p6 { width: 150px; height: 150px; bottom: 0px; right: 0px; z-index: 16; }  /* 极右底 */
 
         .cloud-content {
-            position: absolute; width: 100%; height: 100%; top: 20px; left: 0;
+            position: absolute; width: 100%; height: 100%; top: 35px; left: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 30; text-align: center; transition: opacity 0.4s;
         }
 
         h1 { color: var(--primary-color); font-size: 2.6rem; margin: 0; letter-spacing: 2px; }
-        p { color: #444; font-size: 0.9rem; line-height: 1.6; margin: 10px 0 25px 0; font-weight: 500;}
+        p { color: #444; font-size: 0.95rem; line-height: 1.7; margin: 10px 0 25px 0; font-weight: 500;}
 
         .btn {
-            padding: 15px 45px; background: linear-gradient(135deg, #ff8c00, #ffa502);
+            padding: 16px 50px; background: linear-gradient(135deg, #ff8c00, #ffa502);
             color: white; text-decoration: none; border-radius: 40px 15px 40px 15px;
-            font-weight: 600; transition: 0.4s;
+            font-weight: 600; transition: all 0.4s;
         }
 
-        /* 拨云见日散开轨迹 */
+        /* 散开动效 */
         .scatter .bubble-part::after { transform: translateX(-50%) scale(1.1); } 
-        .scatter .p1 { transform: scale(2.2) translate(0, -280px); opacity: 0; }
-        .scatter .p2 { transform: translate(-350px, -200px) rotate(-30deg); opacity: 0; }
-        .scatter .p3 { transform: translate(350px, -200px) rotate(30deg); opacity: 0; }
-        .scatter .p4 { transform: translate(-300px, 300px) rotate(-90deg); opacity: 0; }
-        .scatter .p5 { transform: translate(0, 400px) rotate(180deg); opacity: 0; }
-        .scatter .p6 { transform: translate(300px, 300px) rotate(90deg); opacity: 0; }
+        .scatter .p1 { transform: scale(2.2) translate(0, -300px); opacity: 0; }
+        .scatter .p2 { transform: translate(-380px, -180px) rotate(-30deg); opacity: 0; }
+        .scatter .p3 { transform: translate(380px, -180px) rotate(30deg); opacity: 0; }
+        .scatter .p4 { transform: translate(-400px, 350px) rotate(-90deg); opacity: 0; }
+        .scatter .p5 { transform: translate(0, 450px) rotate(180deg); opacity: 0; }
+        .scatter .p6 { transform: translate(400px, 350px) rotate(90deg); opacity: 0; }
         
         .scatter .cloud-content { opacity: 0; pointer-events: none; }
         .btn-active-glow { box-shadow: 0 0 60px #ff8c00, 0 0 120px rgba(255, 140, 0, 0.4); }
 
         @media screen and (max-width: 768px) {
-            .cloud-system { width: 340px; transform: translate(-50%, -45%) scale(0.8); }
+            /* 手机端适当缩放以适配 Pro Max 屏幕 */
+            .cloud-system { width: 340px; transform: translate(-50%, -50%) scale(0.8); }
         }
     </style>
 </head>
@@ -136,7 +140,7 @@
             canvas.classList.add('bg-zoom-active');
             setTimeout(() => {
                 window.location.href = "https://nl.lovewhowho.net/noonnoon/";
-            }, 2200);
+            }, 2300);
         });
 
         let tX = 0, tY = 0, cX = 0, cY = 0;
