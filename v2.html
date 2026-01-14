@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>NoonNoon — Emotional Check-in</title>
+    <meta name="color-scheme" content="dark light" />
+    <style>
+      :root {
+        --bg0: #0b0622;
+        --bg1: #24106a;
+        --bg2: #4b2bd6;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-2: rgba(255, 255, 255, 0.12);
+        --stroke: rgba(255, 255, 255, 0.18);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.72);
+        --hint: rgba(255, 255, 255, 0.55);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.25);
+        --radius: 20px;
+        --radius-lg: 28px;
+        --pad: 18px;
+        --pad-lg: 26px;
+        --max: 1080px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial,
+          sans-serif;
+        background: radial-gradient(
+            1200px 800px at 25% 10%,
+            rgba(170, 110, 255, 0.35),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 700px at 70% 35%,
+            rgba(92, 180, 255, 0.18),
+            transparent 58%
+          ),
+          radial-gradient(
+            1000px 900px at 70% 95%,
+            rgba(255, 160, 210, 0.14),
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 50%, var(--bg2) 100%);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 28px 18px 60px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: radial-gradient(
+            14px 14px at 30% 35%,
+            rgba(255, 255, 255, 0.95),
+            rgba(255, 255, 255, 0.25)
+          ),
+          radial-gradient(
+            26px 26px at 60% 65%,
+            rgba(255, 210, 255, 0.55),
+            rgba(255, 255, 255, 0.0)
+          ),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.06));
+        border: 1px solid var(--stroke);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo::after {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background: conic-gradient(
+          from 180deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.35),
+          rgba(255, 255, 255, 0)
+        );
+        filter: blur(2px);
+        animation: spin 10s linear infinite;
+        opacity: 0.7;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .brand h1 {
+        font-size: 18px;
+        margin: 0;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .brand p {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: var(--hint);
+        letter-spacing: 0.2px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--stroke);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(12px);
+      }
+
+      .pill small {
+        color: var(--hint);
+      }
+
+      .hero {
+        margin-top: 18px;
+        border-radius: var(--radius-lg);
+        padding: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.05)
+          );
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            600px 420px at 20% 40%,
+            rgba(255, 255, 255, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            520px 460px at 70% 30%,
+            rgba(255, 210, 255, 0.12),
+            transparent 62%
+          ),
+          radial-gradient(
+            460px 520px at 70% 85%,
+            rgba(120, 200, 255, 0.10),
+            transparent 60%
+          );
+        filter: blur(8px);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .stars {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            rgba(255, 255, 255, 0.65) 1px,
+            transparent 1px
+          ),
+          radial-gradient(
+            rgba(255, 255, 255, 0.4) 1px,
+            transparent 1px
+          );
+        background-size: 120px 120px, 180px 180px;
+        background-position: 10px 20px, 60px 90px;
+        opacity: 0.14;
+        pointer-events: none;
+      }
+
+      .orbit {
+        position: absolute;
+        inset: -20%;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        transform: rotate(12deg);
+        filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.18));
+        pointer-events: none;
+      }
+
+      .orbit::before,
+      .orbit::after {
+        content: "";
+        position: absolute;
+        inset: 12%;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .orbit::after {
+        inset: 24%;
+        border-color: rgba(255, 255, 255, 0.10);
+      }
+
+      .heroGrid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (max-width: 920px) {
+        .heroGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .headline {
+        padding: 2px 2px 0;
+      }
+
+      .headline h2 {
+        margin: 0 0 10px;
+        font-size: 34px;
+        line-height: 1.12;
+        letter-spacing: 0.2px;
+      }
+
+      .headline .tagline {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .quote {
+        margin-top: 16px;
+        border-left: 2px solid rgba(255, 255, 255, 0.25);
+        padding-left: 12px;
+        color: rgba(255, 255, 255, 0.78);
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      .ctaRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        align-items: center;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        background: rgba(255, 255, 255, 0.10);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 12px 14px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(12px);
+        transition: transform 0.12s ease, background 0.12s ease, border 0.12s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+
+      .btnPrimary {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.22),
+          rgba(255, 255, 255, 0.10)
+        );
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+
+      .btnDanger {
+        background: rgba(255, 90, 130, 0.12);
+        border-color: rgba(255, 120, 150, 0.28);
+      }
+
+      .btnGhost {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: none;
+      }
+
+      .card {
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(14px);
+        padding: var(--pad-lg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .kv {
+        display: grid;
+        grid-template-columns: 88px 1fr;
+        gap: 10px 12px;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .k {
+        color: var(--hint);
+      }
+      .v {
+        color: rgba(255, 255, 255, 0.86);
+        word-break: break-word;
+      }
+
+      .section {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      @media (max-width: 920px) {
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+
+      .muted {
+        color: var(--hint);
+      }
+
+      .output {
+        white-space: pre-wrap;
+        line-height: 1.65;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.90);
+        background: rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 14px;
+      }
+
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .hr {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.12);
+        margin: 14px 0;
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+
+      summary {
+        cursor: pointer;
+        padding: 12px 14px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .badge {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.82);
+        white-space: nowrap;
+      }
+
+      .detailBody {
+        padding: 0 14px 14px;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 999;
+      }
+
+      .modal[open] {
+        display: flex;
+      }
+
+      .modalPanel {
+        width: min(820px, 100%);
+        border-radius: 26px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.06)
+          );
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .modalPanel::before {
+        content: "";
+        position: absolute;
+        inset: -30%;
+        background: radial-gradient(
+            520px 420px at 30% 30%,
+            rgba(255, 255, 255, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            520px 520px at 70% 70%,
+            rgba(255, 210, 255, 0.12),
+            transparent 60%
+          );
+        filter: blur(12px);
+        opacity: 0.95;
+        pointer-events: none;
+      }
+
+      .modalHeader,
+      .modalFooter {
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .modalHeader {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .modalHeader h4 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+      }
+
+      .modalBody {
+        padding: 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      @media (max-width: 720px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.18);
+        color: rgba(255, 255, 255, 0.92);
+        padding: 10px 12px;
+        outline: none;
+        font-size: 14px;
+      }
+
+      textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      .step {
+        display: none;
+      }
+      .step[aria-hidden="false"] {
+        display: block;
+      }
+
+      .tiny {
+        font-size: 12px;
+        color: var(--hint);
+      }
+
+      .footerNote {
+        margin-top: 14px;
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 12px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div style="min-width: 0">
+            <h1>NoonNoon</h1>
+            <p>See the patterns behind emotional loops.</p>
+          </div>
+        </div>
+        <div class="pill">
+          <small class="mono" id="stat">memory: 0</small>
+          <span class="badge mono" id="now">--:--</span>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="stars" aria-hidden="true"></div>
+        <div class="orbit" aria-hidden="true"></div>
+
+        <div class="heroGrid">
+          <div class="headline">
+            <h2>Nothing is broken.<br />We just haven’t seen it clearly yet.</h2>
+            <p class="tagline">
+              这不是治疗应用。它更像一个“结构化看见自己”的工具：把情绪、触发点、需求和一句最想说的话，做成可回看的记录。
+            </p>
+            <div class="quote">A system for understanding — enabling conscious response.</div>
+            <div class="ctaRow">
+              <button class="btn btnPrimary" id="openCheckin">
+                ✨ Start Check-in
+              </button>
+              <button class="btn btnGhost" id="copyLast" title="复制最近一次回复">
+                📋 Copy last reply
+              </button>
+              <button class="btn btnDanger" id="clearAll" title="清空本地记忆">
+                🧹 Clear memory
+              </button>
+            </div>
+            <div class="footerNote">
+              你的数据默认只保存在<strong>你自己的浏览器</strong>里（localStorage）。
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>🌙 最近一次对话（Last record）</h3>
+            <div class="kv" id="lastKv">
+              <div class="k">状态</div>
+              <div class="v muted">还没有记录。点 Start Check-in 开始。</div>
+            </div>
+            <div class="hr"></div>
+            <div class="row">
+              <button class="btn btnGhost" id="exportBtn">⬇️ Export JSON</button>
+              <label class="btn btnGhost" style="cursor: pointer">
+                ⬆️ Import JSON
+                <input
+                  id="importInput"
+                  type="file"
+                  accept="application/json"
+                  style="display: none"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="card">
+          <h3>🧠 输出（Generated）</h3>
+          <div class="tiny" id="genHint">
+            生成后会在这里显示 comfort + reply，并自动保存到本地记忆。
+          </div>
+          <div class="hr"></div>
+          <div class="output" id="comfortOut">（comfort 会显示在这里）</div>
+          <div class="hr"></div>
+          <div class="output" id="replyOut">（reply 会显示在这里）</div>
+          <div class="hr"></div>
+          <div class="row">
+            <button class="btn btnGhost" id="copyComfort">📋 Copy comfort</button>
+            <button class="btn btnGhost" id="copyReply">📋 Copy reply</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📒 历史记录（History）</h3>
+          <div class="tiny">点击展开即可查看每次的生成内容。</div>
+          <div class="hr"></div>
+          <div class="list" id="historyList"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal -->
+    <dialog class="modal" id="modal">
+      <div class="modalPanel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modalHeader">
+          <h4 id="modalTitle">NoonNoon Check-in</h4>
+          <button class="btn btnGhost" id="closeModal">✖</button>
+        </div>
+
+        <div class="modalBody">
+          <div class="tiny" id="stepHint"></div>
+          <div class="hr"></div>
+
+          <form id="checkinForm">
+            <div class="step" id="step1" aria-hidden="false">
+              <div class="grid2">
+                <label>
+                  我怎么称呼你比较舒服？
+                  <input
+                    name="name"
+                    placeholder="比如：Abby / 小熊 / 我"
+                    autocomplete="nickname"
+                    required
+                  />
+                </label>
+                <label>
+                  你今天最想对谁说说话？
+                  <input
+                    name="target"
+                    placeholder="比如：男朋友 / 自己 / 妈妈"
+                    required
+                  />
+                </label>
+              </div>
+              <p class="tiny" style="margin: 10px 2px 0">
+                这两项用于生成更像“你的语气”的文本。
+              </p>
+            </div>
+
+            <div class="step" id="step2" aria-hidden="true">
+              <div class="grid2">
+                <label>
+                  如果只选一个词形容现在状态
+                  <select name="emotion" required>
+                    <option value="" selected disabled>请选择</option>
+                    <option value="开心">开心</option>
+                    <option value="生气">生气</option>
+                    <option value="委屈">委屈</option>
+                    <option value="失落">失落</option>
+                    <option value="累">累</option>
+                    <option value="迷茫">迷茫</option>
+                    <option value="说不清">说不清</option>
+                  </select>
+                </label>
+                <label>
+                  也可以自定义一个词（可选）
+                  <input name="emotion_custom" placeholder="比如：麻 / 紧绷 / 心软" />
+                </label>
+              </div>
+
+              <label style="margin-top: 12px">
+                最近最让你卡住 / 难受 / 放不下的点
+                <textarea
+                  name="reason"
+                  placeholder="可以随便碎碎念：发生了什么？你在意的是什么？"
+                  required
+                ></textarea>
+              </label>
+
+              <label>
+                如果对方只能听你一句话，你最想让 TA 听到哪一句？
+                <textarea
+                  name="wish"
+                  placeholder="请写这一句。"
+                  required
+                ></textarea>
+              </label>
+            </div>
+          </form>
+        </div>
+
+        <div class="modalFooter">
+          <div class="row">
+            <span class="badge mono" id="stepBadge">STEP 1/2</span>
+            <span class="tiny" id="autosaveHint">（提交后自动保存）</span>
+          </div>
+          <div class="row">
+            <button class="btn btnGhost" id="prevBtn">← Back</button>
+            <button class="btn btnPrimary" id="nextBtn">Next →</button>
+            <button class="btn btnPrimary" id="submitBtn" style="display: none">
+              ✨ Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      "use strict";
+
+      const STORAGE_KEY = "noonnoon_memory_v1";
+
+      function pad2(n) {
+        return String(n).padStart(2, "0");
+      }
+
+      function formatTime(d) {
+        const y = d.getFullYear();
+        const m = pad2(d.getMonth() + 1);
+        const day = pad2(d.getDate());
+        const hh = pad2(d.getHours());
+        const mm = pad2(d.getMinutes());
+        const ss = pad2(d.getSeconds());
+        return `${y}-${m}-${day} ${hh}:${mm}:${ss}`;
+      }
+
+      function loadMemory() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return [];
+          const data = JSON.parse(raw);
+          return Array.isArray(data) ? data : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function saveMemory(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      }
+
+      function buildComfort(emotion, target) {
+        const e = emotion || "";
+        const t = target || "TA";
+        if (e.includes("开心")) {
+          return `听起来你现在是在带着亮亮的心情在说这些事情，我替 ${t} 偷偷开心一下～`;
+        }
+        if (e.includes("生气")) {
+          return "我能感受到你真的很有火气，不是无理取闹那种，而是觉得自己被忽视 / 不被理解，你的情绪是完全合理的。";
+        }
+        if (e.includes("委屈")) {
+          return "委屈这种情绪特别微妙，但很真实。我在这边先抱抱你一下，再一起看看怎么把它说清楚，而不是一直压在心里。";
+        }
+        if (e.includes("失落")) {
+          return "有一点掉下来的感觉对吗？我在，先别急着责怪自己，我们可以先看看发生了什么，再慢慢找回一点点动力。";
+        }
+        if (e.includes("累")) {
+          return "辛苦你了，这种累不仅是身体，还有心理的负荷。你愿意把这些都说出来，已经非常勇敢了。";
+        }
+        if (e.includes("迷茫")) {
+          return "迷茫其实是你在尝试看清方向的过程，而不是“失败”。我们可以一起把那些模糊的东西拆开，一点点看清楚。";
+        }
+        return "我听到了，你刚刚说的每一个字，对我来说都很重要。即使你现在很难用一个词概括心情，也完全没关系。";
+      }
+
+      function buildReply({ name, target, reason }) {
+        const n = name || "你";
+        const t = target || "TA";
+        const r = reason || "";
+        return `—— 来自现在的我（由 NoonNoon 暂时代你翻译）——
+
+${n}，我知道当面说这些有时候会容易情绪化，或者被忽略成“矫情”。
+
+但如果 ${t} 愿意好好站在你这边看一眼，应该会发现：
+
+「${r}」
+
+这句话对你来说真的很重要，它不是指责，而是希望被看见、被你在乎。
+
+如果有合适的时机，你可以在不那么情绪化的时候，好好聊聊这件事。
+让你们站在同一边，一起对抗问题，而不是互相对抗。
+
+—— 也是为了那个更轻松、更被理解的你 🤍`;
+      }
+
+      function safeText(s) {
+        return (s ?? "").toString();
+      }
+
+      function downloadText(filename, text) {
+        const blob = new Blob([text], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      async function copyToClipboard(text) {
+        const t = safeText(text);
+        if (!t) return;
+        try {
+          await navigator.clipboard.writeText(t);
+        } catch (e) {
+          const ta = document.createElement("textarea");
+          ta.value = t;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+      }
+
+      // ----- UI wiring -----
+      const el = {
+        stat: document.getElementById("stat"),
+        now: document.getElementById("now"),
+        lastKv: document.getElementById("lastKv"),
+        comfortOut: document.getElementById("comfortOut"),
+        replyOut: document.getElementById("replyOut"),
+        historyList: document.getElementById("historyList"),
+
+        modal: document.getElementById("modal"),
+        openCheckin: document.getElementById("openCheckin"),
+        closeModal: document.getElementById("closeModal"),
+
+        prevBtn: document.getElementById("prevBtn"),
+        nextBtn: document.getElementById("nextBtn"),
+        submitBtn: document.getElementById("submitBtn"),
+        stepBadge: document.getElementById("stepBadge"),
+        stepHint: document.getElementById("stepHint"),
+
+        step1: document.getElementById("step1"),
+        step2: document.getElementById("step2"),
+        form: document.getElementById("checkinForm"),
+
+        copyLast: document.getElementById("copyLast"),
+        copyComfort: document.getElementById("copyComfort"),
+        copyReply: document.getElementById("copyReply"),
+
+        exportBtn: document.getElementById("exportBtn"),
+        importInput: document.getElementById("importInput"),
+        clearAll: document.getElementById("clearAll"),
+      };
+
+      let memory = loadMemory();
+      let step = 1;
+
+      function tickClock() {
+        const d = new Date();
+        el.now.textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+      }
+
+      function setStep(n) {
+        step = n;
+        const s1 = step === 1;
+        el.step1.setAttribute("aria-hidden", String(!s1));
+        el.step2.setAttribute("aria-hidden", String(s1));
+        el.prevBtn.style.visibility = s1 ? "hidden" : "visible";
+        el.nextBtn.style.display = s1 ? "inline-flex" : "none";
+        el.submitBtn.style.display = s1 ? "none" : "inline-flex";
+        el.stepBadge.textContent = `STEP ${step}/2`;
+        el.stepHint.textContent =
+          step === 1
+            ? "先填两个最基础的信息：称呼你、你想对谁说。"
+            : "再把情绪 + 卡住的点 + 一句话愿望写下来。";
+      }
+
+      function renderLast() {
+        if (!memory.length) {
+          el.lastKv.innerHTML = `
+            <div class="k">状态</div>
+            <div class="v muted">还没有记录。点 Start Check-in 开始。</div>
+          `;
+          return;
+        }
+        const last = memory[memory.length - 1];
+        el.lastKv.innerHTML = `
+          <div class="k">时间</div><div class="v mono">${safeText(last.time)}</div>
+          <div class="k">名字</div><div class="v">${safeText(last.name)}</div>
+          <div class="k">对象</div><div class="v">${safeText(last.target)}</div>
+          <div class="k">心情</div><div class="v">${safeText(last.emotion)}</div>
+          <div class="k">一句话</div><div class="v">${safeText(last.wish)}</div>
+        `;
+      }
+
+      function renderStats() {
+        el.stat.textContent = `memory: ${memory.length}`;
+      }
+
+      function renderHistory() {
+        if (!memory.length) {
+          el.historyList.innerHTML = `<div class="muted tiny">暂无记录。</div>`;
+          return;
+        }
+
+        const items = memory
+          .slice()
+          .reverse()
+          .map((rec, idxFromEnd) => {
+            const idx = memory.length - 1 - idxFromEnd;
+            const title = `${safeText(rec.time)} · ${safeText(rec.name)} · ${safeText(
+              rec.emotion
+            )}`;
+            const badge = safeText(rec.target || "TA");
+            return `
+              <details>
+                <summary>
+                  <div style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    ${title}
+                  </div>
+                  <span class="badge">${badge}</span>
+                </summary>
+                <div class="detailBody">
+                  <div class="kv">
+                    <div class="k">Reason</div><div class="v">${safeText(rec.reason)}</div>
+                    <div class="k">Wish</div><div class="v">${safeText(rec.wish)}</div>
+                  </div>
+                  <div class="hr"></div>
+                  <div class="tiny muted">Comfort</div>
+                  <div class="output" style="margin-top:8px">${safeText(rec.comfort)}</div>
+                  <div class="hr"></div>
+                  <div class="tiny muted">Reply</div>
+                  <div class="output" style="margin-top:8px">${safeText(rec.reply)}</div>
+                  <div class="hr"></div>
+                  <div class="row">
+                    <button class="btn btnGhost" data-act="use" data-idx="${idx}">↪ Use as last</button>
+                    <button class="btn btnGhost" data-act="copy" data-idx="${idx}">📋 Copy reply</button>
+                    <button class="btn btnDanger" data-act="del" data-idx="${idx}">🗑 Delete</button>
+                  </div>
+                </div>
+              </details>
+            `;
+          })
+          .join("");
+
+        el.historyList.innerHTML = items;
+
+        el.historyList.querySelectorAll("button[data-act]").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const act = btn.getAttribute("data-act");
+            const idx = Number(btn.getAttribute("data-idx"));
+            const rec = memory[idx];
+            if (!rec) return;
+
+            if (act === "del") {
+              memory.splice(idx, 1);
+              saveMemory(memory);
+              rerenderAll();
+              return;
+            }
+
+            if (act === "copy") {
+              await copyToClipboard(rec.reply);
+              return;
+            }
+
+            if (act === "use") {
+              el.comfortOut.textContent = safeText(rec.comfort);
+              el.replyOut.textContent = safeText(rec.reply);
+              return;
+            }
+          });
+        });
+      }
+
+      function rerenderAll() {
+        renderStats();
+        renderLast();
+        renderHistory();
+      }
+
+      function openModal() {
+        setStep(1);
+        el.modal.setAttribute("open", "");
+        el.form.reset();
+        const first = el.form.querySelector('input[name="name"]');
+        if (first) first.focus();
+      }
+
+      function closeModal() {
+        el.modal.removeAttribute("open");
+      }
+
+      function getFormData() {
+        const fd = new FormData(el.form);
+        const name = safeText(fd.get("name")).trim();
+        const target = safeText(fd.get("target")).trim();
+        const emotionPick = safeText(fd.get("emotion")).trim();
+        const emotionCustom = safeText(fd.get("emotion_custom")).trim();
+        const emotion = emotionCustom || emotionPick;
+        const reason = safeText(fd.get("reason")).trim();
+        const wish = safeText(fd.get("wish")).trim();
+
+        if (!name) throw new Error("请填写：称呼你（name）");
+        if (!target) throw new Error("请填写：你想对谁说（target）");
+        if (!emotion) throw new Error("请填写：情绪（emotion）");
+        if (!reason) throw new Error("请填写：卡住的点（reason）");
+        if (!wish) throw new Error("请填写：一句话（wish）");
+
+        return { name, target, emotion, reason, wish };
+      }
+
+      function generateAndSave(data) {
+        const comfort = buildComfort(data.emotion, data.target);
+        const reply = buildReply(data);
+        const record = {
+          time: formatTime(new Date()),
+          ...data,
+          comfort,
+          reply,
+        };
+
+        memory.push(record);
+        saveMemory(memory);
+
+        el.comfortOut.textContent = comfort;
+        el.replyOut.textContent = reply;
+
+        rerenderAll();
+      }
+
+      // ----- events -----
+      el.openCheckin.addEventListener("click", openModal);
+      el.closeModal.addEventListener("click", closeModal);
+      el.modal.addEventListener("click", (e) => {
+        if (e.target === el.modal) closeModal();
+      });
+
+      el.prevBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        setStep(1);
+      });
+
+      el.nextBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        try {
+          const fd = new FormData(el.form);
+          const name = safeText(fd.get("name")).trim();
+          const target = safeText(fd.get("target")).trim();
+          if (!name || !target) throw new Error("先把 STEP 1 的两项填完。");
+          setStep(2);
+        } catch (err) {
+          alert(err.message || String(err));
+        }
+      });
+
+      el.submitBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        try {
+          const data = getFormData();
+          generateAndSave(data);
+          closeModal();
+        } catch (err) {
+          alert(err.message || String(err));
+        }
+      });
+
+      el.copyComfort.addEventListener("click", async () => {
+        await copyToClipboard(el.comfortOut.textContent);
+      });
+
+      el.copyReply.addEventListener("click", async () => {
+        await copyToClipboard(el.replyOut.textContent);
+      });
+
+      el.copyLast.addEventListener("click", async () => {
+        if (!memory.length) return alert("还没有记录。");
+        await copyToClipboard(memory[memory.length - 1].reply);
+      });
+
+      el.exportBtn.addEventListener("click", () => {
+        const ts = formatTime(new Date()).replace(/[ :]/g, "-");
+        downloadText(`noonnoon-memory-${ts}.json`, JSON.stringify(memory, null, 2));
+      });
+
+      el.importInput.addEventListener("change", async () => {
+        const file = el.importInput.files && el.importInput.files[0];
+        if (!file) return;
+        try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          if (!Array.isArray(data)) throw new Error("JSON 格式不对：应该是数组。");
+          memory = data;
+          saveMemory(memory);
+          rerenderAll();
+          alert("导入成功 ✅");
+        } catch (err) {
+          alert(`导入失败：${err.message || err}`);
+        } finally {
+          el.importInput.value = "";
+        }
+      });
+
+      el.clearAll.addEventListener("click", () => {
+        if (!confirm("确定清空本地所有记忆？此操作不可撤销。")) return;
+        memory = [];
+        saveMemory(memory);
+        el.comfortOut.textContent = "（comfort 会显示在这里）";
+        el.replyOut.textContent = "（reply 会显示在这里）";
+        rerenderAll();
+      });
+
+      // init
+      setStep(1);
+      tickClock();
+      setInterval(tickClock, 1000 * 20);
+      rerenderAll();
+    </script>
+  </body>
+</html>
