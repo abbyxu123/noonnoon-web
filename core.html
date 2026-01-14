@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>noon noon · 核心对话</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Optima", serif;
+      background: #f7f3f0;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 420px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      letter-spacing: 2px;
+      color: #e3c1a8;
+    }
+    label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 16px;
+      display: block;
+    }
+    input, textarea, select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 30px 14px 30px 14px;
+      background: #e3c1a8;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(227,193,168,0.35);
+    }
+    .result {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 16px;
+      background: #fff7f2;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      display: none;
+      white-space: pre-line;
+    }
+    .small {
+      font-size: 0.75rem;
+      color: #999;
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>noon noon</h1>
+
+    <label>怎么称呼你？</label>
+    <input id="name" placeholder="比如：Abby、我、小熊">
+
+    <label>你最想对谁说？</label>
+    <input id="target" placeholder="比如：男朋友、自己、妈妈">
+
+    <label>现在的情绪更像：</label>
+    <select id="emotion">
+      <option>开心</option>
+      <option>生气</option>
+      <option>委屈</option>
+      <option>失落</option>
+      <option>累</option>
+      <option>迷茫</option>
+    </select>
+
+    <label>最近最卡你的事：</label>
+    <textarea id="reason" placeholder="可以随便碎碎念"></textarea>
+
+    <label>如果只能说一句话给TA：</label>
+    <textarea id="wish" placeholder="那句话是？"></textarea>
+
+    <button onclick="generate()">生成我的那段话</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="small">noon noon · 情绪不是问题，看清它才是开始</div>
+  </div>
+
+  <script>
+    function generate() {
+      const name = document.getElementById("name").value || "你";
+      const target = document.getElementById("target").value || "对方";
+      const emotion = document.getElementById("emotion").value;
+      const reason = document.getElementById("reason").value || "这些事情";
+      const wish = document.getElementById("wish").value || "被理解";
+
+      let comfort = "我在认真听你说。";
+      if (emotion.includes("开心")) comfort = "你现在的状态是亮着的，我能感觉到。";
+      if (emotion.includes("生气")) comfort = "你不是无理取闹，你是在为自己
 
