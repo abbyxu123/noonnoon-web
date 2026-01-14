@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NoonNoon v3</title>
+  <style>
+    :root{
+      --bg1:#2b1f5a;
+      --bg2:#3b2aa3;
+      --glass: rgba(255,255,255,.12);
+      --glass2: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.18);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.55);
+      --accent: #c7b3ff;
+      --btn: rgba(255,255,255,.14);
+      --btn2: rgba(255,255,255,.18);
+      --danger: rgba(255,120,120,.22);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 22px;
+      --radius2: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(155,110,255,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(120,170,255,.26), transparent 55%),
+        radial-gradient(1200px 700px at 50% 110%, rgba(255,140,220,.18), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:22px 16px 56px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;margin-bottom:16px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), rgba(255,255,255,.12));
+      border:1px solid var(--stroke);
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+    }
+    .brand h1{font-size:20px;line-height:1.1;margin:0}
+    .brand p{margin:2px 0 0 0;color:var(--muted2);font-size:12px}
+    .pill{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.12);
+      color:var(--muted);
+      font-size:12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.25fr .85fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;inset:-2px;
+      background: radial-gradient(600px 200px at 20% 0%, rgba(255,255,255,.10), transparent 55%);
+      pointer-events:none;
+    }
+    .card-inner{position:relative;padding:18px}
+    .hero h2{
+      margin:0 0 6px 0;
+      font-size:46px;
+      letter-spacing:-.02em;
+      line-height:1.05;
+    }
+    .hero .sub{
+      color:var(--muted);
+      margin:8px 0 12px 0;
+      max-width:56ch;
+      font-size:14px;
+      line-height:1.55;
+    }
+    .caps{
+      font-weight:600;
+      letter-spacing:.14em;
+      font-size:12px;
+      color:var(--muted2);
+      text-transform:uppercase;
+      margin:10px 0 16px;
+    }
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    button,.btn{
+      cursor:pointer;
+      border:1px solid var(--stroke);
+      background: var(--btn);
+      color: var(--text);
+      padding:12px 14px;
+      border-radius: 999px;
+      font-weight:650;
+      font-size:14px;
+      transition: .18s ease;
+      display:inline-flex;align-items:center;gap:10px;
+      user-select:none;
+    }
+    button:hover{transform: translateY(-1px); background: var(--btn2)}
+    .danger{background: var(--danger)}
+    .mutedNote{
+      margin:10px 0 0 0;
+      color:var(--muted2);
+      font-size:12px;
+    }
+    .sideTitle{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:8px;
+    }
+    .sideTitle h3{margin:0;font-size:16px}
+    .kv{
+      display:grid;
+      grid-template-columns: 92px 1fr;
+      gap:8px 12px;
+      padding-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .kv b{color:var(--muted2);font-weight:700}
+    .kv .big{
+      color:var(--text);
+      line-height:1.5;
+      white-space:pre-wrap;
+    }
+    .divider{height:1px;background:rgba(255,255,255,.12);margin:14px 0}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width:980px){.row{grid-template-columns:1fr}}
+    .sectionTitle{
+      display:flex;align-items:center;gap:10px;margin:0 0 10px 0;
+      color:var(--text);
+      font-size:14px;
+      font-weight:800;
+    }
+    .box{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .box p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+    textarea,input,select{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.14);
+      color: var(--text);
+      padding:12px 12px;
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:88px;resize:vertical}
+    label{display:block;margin:10px 0 6px;color:var(--muted2);font-size:12px;font-weight:700}
+    .small{
+      font-size:12px;color:var(--muted2)
+    }
+    .out{
+      white-space:pre-wrap;
+      line-height:1.65;
+      color: var(--text);
+      font-size:14px;
+    }
+    .historyItem{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding:12px;
+      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+      cursor:pointer;
+    }
+    .historyItem:hover{background: rgba(0,0,0,.14)}
+    .tag{
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: var(--muted);
+      font-size:12px;font-weight:750;
+      flex:0 0 auto;
+    }
+    .historyLeft{min-width:0}
+    .historyLeft .t1{font-weight:850}
+    .historyLeft .t2{color:var(--muted2);font-size:12px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:56ch}
+    .fileInput{display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>NoonNoon</h1>
+          <p>See the patterns behind emotional loops.</p>
+        </div>
+      </div>
+      <div class="pill">
+        <span id="memCount">memory: 0</span>
+        <span>•</span>
+        <span id="clock">--:--</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left: Hero + Actions -->
+      <div class="card hero">
+        <div class="card-inner">
+          <h2>Nothing is broken.<br/>We just haven’t seen it clearly yet.</h2>
+          <div class="sub">
+            这不是治疗应用。它更像一个“结构化看见自己”的工具：把情绪、触发点、需求和一句最想说的话，做成可回看的记录。
+          </div>
+          <div class="caps">A SYSTEM FOR UNDERSTANDING — ENABLING CONSCIOUS RESPONSE.</div>
+          <div class="btnrow">
+            <button id="btnStart">✨ Start Check-in</button>
+            <button id="btnCopy">📋 Copy last reply</button>
+            <button class="danger" id="btnClear">🧹 Clear memory</button>
+          </div>
+          <div class="mutedNote">你的数据默认只保存在你自己的浏览器里（localStorage）。</div>
+        </div>
+      </div>
+
+      <!-- Right: Last record + import/export -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="sideTitle">
+            <h3>🌙 最近一次对话（Last record）</h3>
+          </div>
+
+          <div class="kv" id="lastKV">
+            <b>时间</b><div class="big">—</div>
+            <b>名字</b><div class="big">—</div>
+            <b>对象</b><div class="big">—</div>
+            <b>心情</b><div class="big">—</div>
+            <b>一句话</b><div class="big">—</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="btnrow">
+            <button id="btnExport">⬇️ Export JSON</button>
+            <button id="btnImport">⬆️ Import JSON</button>
+            <input class="fileInput" id="importFile" type="file" accept="application/json" />
+          </div>
+          <div class="small" style="margin-top:10px">
+            Tip：导入会把文件里的记录合并进当前 memory（不会清空你原本的，除非你点 Clear）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Output -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="sectionTitle">🧠 输出（Generated）</div>
+          <div class="box">
+            <div class="small" style="margin-bottom:10px">生成后会显示 comfort + reply，并自动保存到本地记忆。</div>
+            <div class="out" id="outText">—</div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="sectionTitle">🔎 状态分析（Root Cause / Pattern / Advice）</div>
+          <div class="row" style="margin-top:0">
+            <div class="box">
+              <div class="small"><b>Root Cause</b>（根因猜测）</div>
+              <p id="outRoot">—</p>
+            </div>
+            <div class="box">
+              <div class="small"><b>Pattern</b>（你们的循环）</div>
+              <p id="outPattern">—</p>
+            </div>
+          </div>
+          <div style="height:12px"></div>
+          <div class="box">
+            <div class="small"><b>Advice</b>（更像“下一步动作”）</div>
+            <p id="outAdvice">—</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form + History -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="sectionTitle">📝 Check-in</div>
+
+          <label>我怎么称呼你比较舒服？</label>
+          <input id="inName" placeholder="比如 Abby / 小熊 / 我" />
+
+          <label>你今天最想对谁说说话？</label>
+          <input id="inTarget" placeholder="比如 男朋友 / 自己 / 妈妈" />
+
+          <label>如果只选一个词形容现在的状态</label>
+          <select id="inEmotion">
+            <option value="">（随便选）</option>
+            <option>开心</option><option>生气</option><option>委屈</option><option>失落</option>
+            <option>累</option><option>迷茫</option><option>紧绷</option><option>焦虑</option>
+          </select>
+
+          <label>最近最让你卡住/难受/放不下的点</label>
+          <textarea id="inReason" placeholder="可以随便碎碎念…"></textarea>
+
+          <label>如果对方只能听你一句话，你最想让TA听到哪一句？</label>
+          <textarea id="inWish" placeholder="请输这句…"></textarea>
+
+          <div class="btnrow" style="margin-top:12px">
+            <button id="btnGenerate">✅ Generate</button>
+            <button id="btnSaveOnly">💾 Save only</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="sectionTitle">🗂️ 历史记录（History）</div>
+          <div id="historyList" style="display:flex;flex-direction:column;gap:10px">
+            <!-- items -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ====== Storage ======
+    const KEY = "noonnoon_memory_v3";
+    function nowStr(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2,"0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+    function loadMemory(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        const data = raw ? JSON.parse(raw) : [];
+        return Array.isArray(data) ? data : [];
+      }catch(e){ return []; }
+    }
+    function saveMemory(mem){
+      localStorage.setItem(KEY, JSON.stringify(mem, null, 2));
+      refreshUI();
+    }
+
+    // ====== “chat.py” comfort mapping (ported) ======
+    function comfortFor(emotion, target){
+      if(!emotion) return "我听到了，你刚刚说的每一个字，对我来说都很重要。即使你现在很难用一个词概括心情，也完全没关系。";
+      if(emotion.includes("开心")) return `听起来你现在是在带着亮亮的心情在说这些事情，我替 ${target||"TA"} 偷偷开心一下～`;
+      if(emotion.includes("生气")) return "我能感受到你真的很有火气，不是无理取闹那种，而是觉得自己被忽视 / 不被理解，你的情绪是完全合理的。";
+      if(emotion.includes("委屈")) return "委屈这种情绪特别微妙，但很真实。我在这边先抱抱你一下，再一起看看怎么把它说清楚，而不是一直压在心里。";
+      if(emotion.includes("失落")) return "有一点掉下来的感觉对吗？我在，先别急着责怪自己，我们可以先看看发生了什么，再慢慢找回一点点动力。";
+      if(emotion.includes("累")) return "辛苦你了，这种累不仅是身体，还有心理的负荷。你愿意把这些都说出来，已经非常勇敢了。";
+      if(emotion.includes("迷茫")) return "迷茫其实是你在尝试看清方向的过程，而不是“失败”。我们可以一起把那些模糊的东西拆开，一点点看清楚。";
+      if(emotion.includes("焦虑") || emotion.includes("紧绷")) return "我能感觉到你现在很绷很紧。先不用逼自己做‘完美决定’，我们把问题拆小，下一步只做一件事。";
+      return "我听到了，你刚刚说的每一个字，对我来说都很重要。";
+    }
+
+    // ====== lightweight analysis (Root cause / Pattern / Advice) ======
+    function analyze({emotion, reason, wish, target}){
+      const emo = (emotion||"").trim();
+      const r = (reason||"").trim();
+      const w = (wish||"").trim();
+
+      // Root Cause (heuristic)
+      let root = "你在这段关系里最核心的需求是“被看见/被回应/被放在心上”。当回应缺失时，大脑会自动把不确定性放大成威胁感。";
+      if(emo.includes("生气")) root = "你不是单纯在生气，而是在保护边界：你需要尊重与清晰的沟通，而不是被晾着。";
+      if(emo.includes("委屈")) root = "委屈通常来自“我已经很努力了，但对方没接住”。这背后是强烈的连接需求 + 害怕失去。";
+      if(emo.includes("失落")) root = "失落常见于期待落空：你对未来/关系有投入，但目前反馈不足，导致能量回收失败。";
+      if(emo.includes("迷茫")) root = "迷茫多半是信息不完整：你不知道对方真实状态/意图，于是你无法做出稳定判断。";
+      if(emo.includes("累")) root = "你在高负荷状态下试图维持关系稳定，这会把‘恢复’和‘关系’绑在一起，导致更累。";
+
+      // Pattern
+      let pattern = "循环大概是：你想靠近 → 得不到回应/不确定 → 你更用力解释/证明 → 对方压力上升或继续沉默 → 你更焦虑。";
+      if(r.includes("不回") || r.includes("失踪") || r.includes("沉默")) pattern = "循环很像：你发出连接信号 → 对方沉默 → 你开始自我怀疑/脑补 → 你加大表达 → 对方更回避。";
+      if(w.includes("需要回应")) pattern = "循环核心点在“回应缺口”：你要的是一个信号（哪怕很小），对方给不了时就会反复触发焦虑。";
+
+      // Advice
+      let advice = "下一步只做三件事：\n1) 把你想要的‘回应’定义得更小（比如：一句确认/一个时间点）。\n2) 用一句话发出低压力请求（不解释、不控诉）。\n3) 给自己一个观察窗口（比如 72 小时），窗口内不连发。";
+      if(emo.includes("生气")) advice = "你可以把表达从‘情绪对抗’切到‘规则清晰’：\n- 只说事实 + 需求 + 选项。\n例：我在意的是回应。如果你需要空间，请告诉我一个你能回复的时间点。";
+      if(emo.includes("迷茫")) advice = "先补信息：\n- 你最缺的不是“更多表达”，而是“明确状态”。\n- 你可以请求一个最小信息：现在是否方便沟通/需要多久空间/是否安全。";
+      return {root, pattern, advice};
+    }
+
+    // ====== UI ======
+    const memCount = document.getElementById("memCount");
+    const clock = document.getElementById("clock");
+    const lastKV = document.getElementById("lastKV");
+    const historyList = document.getElementById("historyList");
+
+    const outText = document.getElementById("outText");
+    const outRoot = document.getElementById("outRoot");
+    const outPattern = document.getElementById("outPattern");
+    const outAdvice = document.getElementById("outAdvice");
+
+    const inName = document.getElementById("inName");
+    const inTarget = document.getElementById("inTarget");
+    const inEmotion = document.getElementById("inEmotion");
+    const inReason = document.getElementById("inReason");
+    const inWish = document.getElementById("inWish");
+
+    function setClock(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2,"0");
+      clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    setClock(); setInterval(setClock, 1000*15);
+
+    function renderLast(mem){
+      if(!mem.length){
+        lastKV.innerHTML = `
+          <b>时间</b><div class="big">—</div>
+          <b>名字</b><div class="big">—</div>
+          <b>对象</b><div class="big">—</div>
+          <b>心情</b><div class="big">—</div>
+          <b>一句话</b><div class="big">—</div>
+        `;
+        return;
+      }
+      const last = mem[mem.length-1];
+      lastKV.innerHTML = `
+        <b>时间</b><div class="big">${escapeHtml(last.time||"")}</div>
+        <b>名字</b><div class="big">${escapeHtml(last.name||"")}</div>
+        <b>对象</b><div class="big">${escapeHtml(last.target||"")}</div>
+        <b>心情</b><div class="big">${escapeHtml(last.emotion||"")}</div>
+        <b>一句话</b><div class="big">${escapeHtml(last.wish||"").slice(0,80)}${(last.wish||"").length>80?"…":""}</div>
+      `;
+    }
+
+    function renderHistory(mem){
+      historyList.innerHTML = "";
+      if(!mem.length){
+        historyList.innerHTML = `<div class="small">还没有历史。点一下 “Start Check-in”。</div>`;
+        return;
+      }
+      const last10 = mem.slice(-10).reverse();
+      last10.forEach(item=>{
+        const div = document.createElement("div");
+        div.className = "historyItem";
+        div.innerHTML = `
+          <div class="historyLeft">
+            <div class="t1">${escapeHtml(item.time||"")}&nbsp;·&nbsp;${escapeHtml(item.name||"")}&nbsp;·&nbsp;${escapeHtml(item.emotion||"")}</div>
+            <div class="t2">Reason：${escapeHtml(item.reason||"—")}</div>
+          </div>
+          <div class="tag">${escapeHtml(item.target||"对象")}</div>
+        `;
+        div.onclick = ()=>{
+          // load into form
+          inName.value = item.name||"";
+          inTarget.value = item.target||"";
+          inEmotion.value = item.emotion||"";
+          inReason.value = item.reason||"";
+          inWish.value = item.wish||"";
+          // also render outputs if saved
+          if(item._generated){
+            outText.textContent = item._generated.reply || "—";
+            outRoot.textContent = item._generated.root || "—";
+            outPattern.textContent = item._generated.pattern || "—";
+            outAdvice.textContent = item._generated.advice || "—";
+          }
+        };
+        historyList.appendChild(div);
+      });
+    }
+
+    function refreshUI(){
+      const mem = loadMemory();
+      memCount.textContent = `memory: ${mem.length}`;
+      renderLast(mem);
+      renderHistory(mem);
+
+      if(mem.length && mem[mem.length-1]._generated){
+        const g = mem[mem.length-1]._generated;
+        outText.textContent = g.reply || "—";
+        outRoot.textContent = g.root || "—";
+        outPattern.textContent = g.pattern || "—";
+        outAdvice.textContent = g.advice || "—";
+      }
+    }
+
+    // ====== actions ======
+    document.getElementById("btnStart").onclick = ()=>{
+      // just scroll to form
+      window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+      inName.focus();
+    };
+
+    document.getElementById("btnClear").onclick = ()=>{
+      if(confirm("确定清空本地 memory 吗？（不可恢复）")){
+        localStorage.removeItem(KEY);
+        outText.textContent = "—";
+        outRoot.textContent = "—";
+        outPattern.textContent = "—";
+        outAdvice.textContent = "—";
+        refreshUI();
+      }
+    };
+
+    document.getElementById("btnCopy").onclick = async ()=>{
+      const mem = loadMemory();
+      const last = mem[mem.length-1];
+      const text = last && last._generated && last._generated.reply ? last._generated.reply : outText.textContent;
+      try{
+        await navigator.clipboard.writeText(text || "");
+        alert("已复制到剪贴板");
+      }catch(e){
+        alert("复制失败：浏览器权限限制。你可以手动选中文本复制。");
+      }
+    };
+
+    document.getElementById("btnExport").onclick = ()=>{
+      const mem = loadMemory();
+      const blob = new Blob([JSON.stringify(mem, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "noonnoon-memory.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    const importFile = document.getElementById("importFile");
+    document.getElementById("btnImport").onclick = ()=> importFile.click();
+    importFile.onchange = async ()=>{
+      const file = importFile.files && importFile.files[0];
+      if(!file) return;
+      try{
+        const txt = await file.text();
+        const data = JSON.parse(txt);
+        if(!Array.isArray(data)) throw new Error("JSON 不是数组");
+        const mem = loadMemory();
+        const merged = mem.concat(data);
+        saveMemory(merged);
+        alert("导入成功（已合并）");
+      }catch(e){
+        alert("导入失败：" + e.message);
+      }finally{
+        importFile.value = "";
+      }
+    };
+
+    function buildReply({name, target, emotion, reason, wish}){
+      const comfort = comfortFor(emotion, target);
+      const reply = `—— 来自现在的我（由 NoonNoon 暂时代你翻译）——
+
+${name||"你"}，我知道当面说这些有时候会容易情绪化，或者被忽略成“矫情”。
+
+但如果 ${target||"TA"} 愿意好好站在你这边看一眼，应该会发现：
+
+「${reason||"（你还没写原因）"}」
+
+这句话对你来说真的很重要，它不是指责，而是希望被看见、被你在乎。
+
+你最想让TA听到的一句话是：
+「${wish||"（你还没写那句话）"}」
+
+如果有合适的时机，你可以在不那么情绪化的时候，好好聊聊这件事。
+让你们站在同一边，一起对抗问题，而不是互相对抗。
+
+—— 也是为了那个更轻松、更被理解的你 🤍`;
+      return {comfort, reply};
+    }
+
+    document.getElementById("btnSaveOnly").onclick = ()=>{
+      const record = collectRecord(false);
+      if(!record) return;
+      const mem = loadMemory();
+      mem.push(record);
+      saveMemory(mem);
+      alert("已保存到 memory（未生成输出）");
+    };
+
+    document.getElementById("btnGenerate").onclick = ()=>{
+      const record = collectRecord(true);
+      if(!record) return;
+      const mem = loadMemory();
+      mem.push(record);
+      saveMemory(mem);
+
+      // render outputs
+      outText.textContent = record._generated.reply;
+      outRoot.textContent = record._generated.root;
+      outPattern.textContent = record._generated.pattern;
+      outAdvice.textContent = record._generated.advice;
+
+      // top right last record auto refresh already
+      window.scrollTo({top: 0, behavior:"smooth"});
+    };
+
+    function collectRecord(withGenerate){
+      const name = inName.value.trim() || "";
+      const target = inTarget.value.trim() || "";
+      const emotion = inEmotion.value || "";
+      const reason = inReason.value.trim() || "";
+      const wish = inWish.value.trim() || "";
+
+      if(!name && !target && !emotion && !reason && !wish){
+        alert("你还没填内容。随便填一点也行。");
+        return null;
+      }
+
+      const record = { time: nowStr(), name, target, emotion, reason, wish };
+      if(withGenerate){
+        const {comfort, reply} = buildReply(record);
+        const a = analyze(record);
+        record._generated = {
+          comfort,
+          reply: comfort + "\n\n" + reply,
+          root: a.root,
+          pattern: a.pattern,
+          advice: a.advice
+        };
+      }
+      return record;
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
+    }
+
+    // init
+    refreshUI();
+  </script>
+</body>
+</html>
